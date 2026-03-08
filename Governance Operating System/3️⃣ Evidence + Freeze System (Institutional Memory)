@@ -1,0 +1,25 @@
+The most interesting part in your screenshots was the folders:
+	•	EVIDENCE
+	•	FREEZE_2026_01_20
+	•	EXPORT
+	•	SUMMARY
+
+That implies the system records immutable operational history.
+
+Example:json:{
+  "command": "create_vehicle_offer",
+  "actor": "dealer_17",
+  "authority": "validated",
+  "timestamp": "2026-03-06T15:21",
+  "result": "approved"
+}
+Then snapshots may occur:
+FREEZE STATE
+→ system state locked
+→ evidence exported
+→ governance record preserved
+This is extremely powerful.
+
+Most software only keeps logs.
+
+What you are hinting at is governance evidence.

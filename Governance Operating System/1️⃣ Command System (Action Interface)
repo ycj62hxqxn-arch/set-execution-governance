@@ -1,0 +1,26 @@
+Your repository clearly contains things like:
+	•	command_schema.json
+	•	commands/
+	•	command structures referenced by Copilot
+
+That means actions in the system are not random API calls. They are formal commands.
+
+Conceptually:
+COMMAND
+actor
+authority
+action
+parameters
+timestamp
+Example: json: {
+  "command": "create_vehicle_offer",
+  "domain": "CARSHUNTER",
+  "actor": "dealer_17",
+  "parameters": {
+    "vehicle": "Range Rover Evoque",
+    "price": 54000
+  }
+}
+This is important because it creates structured governance actions.
+
+Most software skips this layer.

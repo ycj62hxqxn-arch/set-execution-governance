@@ -1,0 +1,22 @@
+pms_govern/
+
+src/
+   qged_gate.py
+   gcc_engine.py
+   immutable_ledger.py
+
+config/
+   governance_policy.yaml
+
+schemas/
+   command_schema.json
+
+metadata/
+   ai_manifest.json
+   system_manifest.json
+
+docs/
+   pms_overview.md
+
+ledger/
+   ledger.jsonl

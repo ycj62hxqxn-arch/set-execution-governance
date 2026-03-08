@@ -1,0 +1,16 @@
+{
+  "system_name": "PMS_GOVERN",
+  "version": "1.0",
+  "organization": "BPB Solutions LTD",
+  "architecture": "Authority-First Governance Engine",
+  "governance_model": "Command → Authority Gate → Ledger",
+  "authority_root": {
+    "id": "AA",
+    "name": "Alaa Atia",
+    "role": "System Authority"
+  },
+  "ai_actor": "YAI",
+  "ledger_type": "append_only_jsonl",
+  "hash_algorithm": "SHA256",
+  "operational_since": "2026-01-23"
+}

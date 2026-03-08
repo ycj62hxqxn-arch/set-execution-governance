@@ -1,0 +1,18 @@
+Before execution the system evaluates:
+COMMAND
+↓
+STATE ENGINE
+↓
+AUTHORITY GATE
+↓
+POLICY ENGINE
+↓
+EXECUTION
+↓
+EVIDENCE
+so the validation step becomes:
+validate_schema(command)
+load_system_state()
+load_domain_state()
+load_authority_state()
+evaluate_policy()

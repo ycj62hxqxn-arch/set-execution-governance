@@ -1,0 +1,25 @@
+authority_levels:
+
+  AA:
+    description: System sovereign authority
+    max_complexity: 10
+
+  YAI:
+    description: AI proposal agent
+    max_complexity: 3
+
+  OPERATOR:
+    description: delegated operations
+    max_complexity: 5
+
+signing_rules:
+
+  complexity_1_3:
+    signers_required: 1
+
+  complexity_4_7:
+    signers_required: 2
+
+  complexity_8_10:
+    signers_required:
+      - AA

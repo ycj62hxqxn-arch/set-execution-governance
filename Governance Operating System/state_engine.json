@@ -1,0 +1,21 @@
+governance decisions need context.
+
+Example:
+{
+  "command": "approve_trade",
+  "actor": "operator",
+  "amount": 1200000
+}
+Without state, the system cannot know:
+	•	risk level
+	•	domain condition
+	•	authority escalation requirement
+
+So we introduce:
+SYSTEM_STATE
+DOMAIN_STATE
+AUTHORITY_STATE
+The system state includes:
+    •	risk level
+    • domain condition
+    • authority escalation requirement

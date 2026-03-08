@@ -1,0 +1,26 @@
+Tracks the current governance authority context.
+{
+  "authority_chain": [
+    {
+      "role": "AA",
+      "level": 5,
+      "sign_required": true
+    },
+    {
+      "role": "OPERATOR",
+      "level": 3,
+      "sign_required": true
+    },
+    {
+      "role": "YAI",
+      "level": 1,
+      "sign_required": false
+    }
+  ],
+  "current_authority_mode": "delegated"
+}
+Authority modes:
+direct
+delegated
+restricted
+emergency

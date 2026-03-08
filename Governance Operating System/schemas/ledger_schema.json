@@ -1,0 +1,13 @@
+{
+  "entry_id": "UUID",
+  "timestamp": "ISO8601",
+  "command_id": "UUID",
+  "decision": "ALLOW | BLOCK",
+  "actor": "string",
+  "signer": "string",
+  "complexity": "int",
+  "sector": "string",
+  "operation": "string",
+  "hash": "SHA256",
+  "previous_hash": "SHA256"
+}

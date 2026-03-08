@@ -1,0 +1,21 @@
+AA ALCATARA
+   │
+   │ governance doctrine
+   │
+PMS_GOVERN
+   │
+   │ governance runtime
+   │
+BIG-G ENGINE
+   │
+   ├ domains
+   │   ├ CARSHUNTER
+   │   ├ BPB
+   │   ├ IBN SINA
+   │
+   ├ actors
+   │   ├ operators
+   │   ├ AI agents
+   │   ├ partners
+   │
+   └ evidence ledger

@@ -1,0 +1,15 @@
+{
+  "project": "PMS_GOVERN",
+  "type": "Authority-First Governance Engine",
+  "architecture": "Command → Authority Gate → Ledger",
+  "core_modules": [
+    "gcc_engine",
+    "qged_gate",
+    "immutable_ledger",
+    "execution_evidence"
+  ],
+  "ai_actor": "YAI",
+  "authority_root": "AA",
+  "language_stack": ["python", "json", "yaml"],
+  "purpose": "Governed decision execution with immutable audit trail"
+}

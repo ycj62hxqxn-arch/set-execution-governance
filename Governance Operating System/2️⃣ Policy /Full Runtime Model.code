@@ -1,0 +1,17 @@
+USER / AI
+   ↓
+COMMAND
+   ↓
+SCHEMA VALIDATION
+   ↓
+STATE ENGINE   ← missing layer
+   ↓
+AUTHORITY GATE
+   ↓
+POLICY ENGINE
+   ↓
+EXECUTION
+   ↓
+EVIDENCE LEDGER
+   ↓
+FREEZE SNAPSHOT

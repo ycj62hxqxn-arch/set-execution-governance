@@ -1,0 +1,21 @@
+This describes the overall runtime condition.
+{
+  "system_id": "PMS_GOVERN",
+  "version": "1.0",
+  "runtime_mode": "operational",
+  "risk_level": "normal",
+  "governance_cycle": "weekly",
+  "freeze_state": false,
+  "timestamp": "2026-03-07T21:20:00Z"
+}
+Possible values:
+runtime_mode:
+- development
+- operational
+- audit
+- freeze
+
+risk_level:
+- normal
+- elevated
+- critical

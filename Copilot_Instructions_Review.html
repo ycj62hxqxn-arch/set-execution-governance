@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMS_GOVERN — AI Agent Copilot Instructions (Review Draft)</title>
+  <style>
+    :root {
+      --primary: #0d2b2e;
+      --navy: #1a3a52;
+      --slate: #2c3e50;
+      --gold: #d4af37;
+      --gold-soft: #f2cc8f;
+      --bg: #f7f8fa;
+      --white: #ffffff;
+      --muted: #6c7a89;
+      --success: #27ae60;
+      --info: #3498db;
+      --warn: #e67e22;
+      --danger: #c0392b;
+      --code-bg: #1e2d30;
+      --code-text: #a8d8a0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--slate);
+      line-height: 1.75;
+      padding: 24px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(13, 43, 46, 0.13);
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--navy) 100%);
+      color: var(--white);
+      padding: 56px 48px 48px;
+      text-align: center;
+      position: relative;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-soft) 100%);
+    }
+    header .label {
+      font-size: 0.8em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 2.6em;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 1.15em;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--primary);
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.8em;
+      margin: 4px;
+      letter-spacing: 0.5px;
+    }
+    .badge.blue  { background: var(--info);    color: #fff; }
+    .badge.green { background: var(--success); color: #fff; }
+    .badge.red   { background: var(--danger);  color: #fff; }
+
+    /* ── CONTENT ── */
+    .content { padding: 48px 48px 40px; }
+
+    .review-note {
+      background: #fff8e6;
+      border-left: 5px solid var(--gold);
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 40px;
+      font-size: 0.97em;
+      color: #5a4200;
+    }
+    .review-note strong { color: var(--warn); }
+
+    section { margin-bottom: 48px; }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.55em;
+      font-weight: 700;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--gold);
+      margin-bottom: 22px;
+    }
+    h3 {
+      color: var(--navy);
+      font-size: 1.1em;
+      font-weight: 600;
+      margin: 20px 0 8px;
+    }
+    p { margin-bottom: 14px; }
+
+    /* ── PIPELINE ── */
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .pipe-step {
+      background: var(--primary);
+      color: var(--white);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.88em;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .pipe-arrow {
+      color: var(--gold);
+      font-size: 1.4em;
+      font-weight: 700;
+    }
+    .state-req {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .state-chip {
+      background: #e8f4fd;
+      border: 2px solid var(--info);
+      color: var(--navy);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+    .state-chip.warn { background: #fff3e0; border-color: var(--warn); color: #7a4000; }
+
+    /* ── AUTHORITY TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 16px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+    }
+    thead th {
+      background: var(--primary);
+      color: var(--gold-soft);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85em;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    tbody tr:nth-child(even) { background: #f4f6f8; }
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e0e4e8;
+      vertical-align: middle;
+    }
+    tbody tr:hover { background: #eaf3fb; }
+    .tick { color: var(--success); font-size: 1.2em; }
+    .cross { color: var(--danger); font-size: 1.2em; }
+
+    /* ── SIGNING RULES ── */
+    .rule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .rule-card {
+      border: 2px solid #dee4ea;
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .rule-card .range {
+      font-size: 1.3em;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .rule-card .req { color: var(--muted); font-size: 0.9em; }
+    .rule-card.critical { border-color: var(--danger); background: #fff5f5; }
+    .rule-card.critical .range { color: var(--danger); }
+    .rule-card.medium { border-color: var(--warn); background: #fff9f2; }
+    .rule-card.medium .range { color: var(--warn); }
+    .rule-card.low { border-color: var(--success); background: #f4fdf7; }
+    .rule-card.low .range { color: var(--success); }
+    .special-rule {
+      background: #fff3cd;
+      border-left: 4px solid var(--gold);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-top: 14px;
+      font-size: 0.93em;
+    }
+
+    /* ── YAI CONSTRAINTS ── */
+    .constraint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .allow-box, .block-box {
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .allow-box {
+      background: #f0faf4;
+      border: 2px solid var(--success);
+    }
+    .block-box {
+      background: #fdf0f0;
+      border: 2px solid var(--danger);
+    }
+    .allow-box h3 { color: var(--success); margin-top: 0; }
+    .block-box h3 { color: var(--danger); margin-top: 0; }
+    .allow-box li, .block-box li { margin: 6px 0; font-size: 0.95em; }
+    ul.plain { list-style: none; padding: 0; }
+    ul.plain li::before { content: "• "; color: var(--gold); font-weight: 700; }
+
+    /* ── COMMAND SCHEMA ── */
+    .schema-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .schema-field {
+      background: #f4f6f9;
+      border: 1px solid #d0d8e0;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .schema-field .fname {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.9em;
+    }
+    .schema-field .fval {
+      color: var(--muted);
+      font-size: 0.82em;
+      margin-top: 4px;
+    }
+
+    /* ── CODE BLOCK ── */
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background: #eef1f5;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #1a3a52;
+    }
+
+    /* ── LEDGER ── */
+    .ledger-chain {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 16px;
+      align-items: stretch;
+    }
+    .ledger-block {
+      flex: 1;
+      min-width: 150px;
+      background: var(--code-bg);
+      color: #cde8ff;
+      border-radius: 0;
+      padding: 16px 14px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8em;
+      position: relative;
+    }
+    .ledger-block:first-child { border-radius: 10px 0 0 10px; }
+    .ledger-block:last-child  { border-radius: 0 10px 10px 0; }
+    .ledger-block .lhash { color: var(--gold-soft); font-size: 0.75em; margin-top: 8px; word-break: break-all; }
+    .ledger-block .ltitle { color: var(--gold); font-weight: 700; font-size: 0.85em; margin-bottom: 6px; }
+    .chain-arrow { display: flex; align-items: center; color: var(--gold); font-size: 1.6em; padding: 0 2px; align-self: center; }
+
+    /* ── DOMAINS ── */
+    .domain-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .domain-card {
+      border: 2px solid #dee4ea;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .domain-card .dname {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .domain-card .dtag {
+      display: inline-block;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.75em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .domain-card ul { padding-left: 18px; font-size: 0.9em; color: var(--muted); }
+
+    /* ── RUNTIME MODES ── */
+    .mode-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .mode-pill {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.88em;
+      font-weight: 600;
+      border: 2px solid;
+    }
+    .mode-pill.dev      { border-color: var(--info);    color: var(--info);    background: #eaf4fd; }
+    .mode-pill.ops      { border-color: var(--success); color: var(--success); background: #f0faf4; }
+    .mode-pill.audit    { border-color: var(--warn);    color: var(--warn);    background: #fff9f2; }
+    .mode-pill.freeze   { border-color: var(--danger);  color: var(--danger);  background: #fdf0f0; }
+
+    /* ── KEY FILES ── */
+    .file-list { list-style: none; padding: 0; }
+    .file-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eef1f4;
+    }
+    .file-list li:last-child { border-bottom: none; }
+    .file-icon { font-size: 1.2em; flex-shrink: 0; margin-top: 2px; }
+    .file-path {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.88em;
+      color: var(--navy);
+      font-weight: 600;
+    }
+    .file-desc { color: var(--muted); font-size: 0.88em; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.8);
+      padding: 28px 48px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    footer strong { color: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      body { padding: 0; }
+      .container { border-radius: 0; }
+      header, .content { padding: 32px 20px; }
+      h1 { font-size: 1.9em; }
+      .constraint-grid { grid-template-columns: 1fr; }
+      .ledger-chain { flex-direction: column; }
+      .ledger-block:first-child { border-radius: 10px 10px 0 0; }
+      .ledger-block:last-child  { border-radius: 0 0 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="label">BPB Solutions LTD · Governance Platform</div>
+    <h1>🏢 BPB Solutions LTD</h1>
+    <div class="subtitle">PMS_GOVERN — AI Agent Copilot Instructions Review</div>
+    <div style="margin-top: 14px; font-size: 0.95em; opacity: 0.9;">
+      <strong>Authority-First Governance Engine</strong> | Regulator-Safe &amp; Audit-Ready
+    </div>
+    <div>
+      <span class="badge">FOR REVIEW</span>
+      <span class="badge blue">YAI-ADVISORY ONLY</span>
+      <span class="badge green">8 MARCH 2026</span>
+      <span class="badge">AUDIT-READY</span>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- REVIEW NOTE -->
+    <div class="review-note">
+      <strong>📋 Review Draft for BPB Shab</strong> — This document is a rendered version of
+      <code>.github/copilot-instructions.md</code>. It describes how AI coding agents should
+      understand and work within the PMS_GOVERN governance system. Please flag any sections
+      that need clarification, correction, or additional detail.
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture">
+      <h2>🏛 Architecture: Command → QGED Gate → Ledger</h2>
+      <p>Every action in the system flows through a single governed pipeline. No command bypasses this chain.</p>
+
+      <div class="pipeline">
+        <div class="pipe-step">Command Interface</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">Authority / Policy Engine</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">Execution Layer</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">Evidence Ledger</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">State Freeze</div>
+      </div>
+
+      <h3>Three-Part Runtime Context (Required Before Any Decision)</h3>
+      <p>QGED cannot make a decision without all three state inputs. Without them, risk level, domain conditions, and authority escalation requirements are unknown — <strong>no command may proceed</strong>.</p>
+      <div class="state-req">
+        <div class="state-chip">SYSTEM_STATE</div>
+        <div class="state-chip">+</div>
+        <div class="state-chip">DOMAIN_STATE</div>
+        <div class="state-chip">+</div>
+        <div class="state-chip">AUTHORITY_STATE</div>
+        <div class="state-chip warn">= Gate Can Decide</div>
+      </div>
+    </section>
+
+    <!-- DIRECTORY LAYOUT -->
+    <section id="directories">
+      <h2>📁 Directory Layout</h2>
+      <ul class="file-list">
+        <li>
+          <span class="file-icon">🗂</span>
+          <div>
+            <div class="file-path">PMS_GOVERN/</div>
+            <div class="file-desc">Canonical implementation tree — <code>CORE/</code>, <code>LAW/</code>, <code>STATE/</code>, <code>LEDGER/</code>, <code>MANIFEST/</code>, <code>DOMAINS/</code>, <code>AI/</code></div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">🗂</span>
+          <div>
+            <div class="file-path">Governance Operating System/</div>
+            <div class="file-desc">Parallel runtime organisation — its own <code>schemas/</code>, <code>policy/</code>, <code>ledger/</code>, and live state files</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">📄</span>
+          <div>
+            <div class="file-path">Root-level JSON/YAML files</div>
+            <div class="file-desc">Prototype / reference copies — <strong>canonical versions live inside subdirectories</strong></div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">⚙️</span>
+          <div>
+            <div class="file-path">PMS_GOVERN/CORE/</div>
+            <div class="file-desc">Four engines: <code>authority_engine</code>, <code>command_engine</code>, <code>execution_runtime</code>, <code>policy_engine</code></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- AUTHORITY CHAIN -->
+    <section id="authority">
+      <h2>🔑 Authority Chain</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Actor</th>
+              <th>Level</th>
+              <th>Max Complexity</th>
+              <th>Execution Rights</th>
+              <th>Sectors</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AA</strong> <span style="color:var(--muted); font-size:0.85em;">(Alaa Atia, sovereign)</span></td>
+              <td><span style="font-weight:700; color:var(--danger);">5 — sovereign</span></td>
+              <td>10</td>
+              <td><span class="tick">✅</span></td>
+              <td>All sectors</td>
+            </tr>
+            <tr>
+              <td><strong>BPB_OPERATOR</strong> <span style="color:var(--muted); font-size:0.85em;">(delegated)</span></td>
+              <td><span style="font-weight:700; color:var(--warn);">3 — operational</span></td>
+              <td>5</td>
+              <td><span class="tick">✅</span></td>
+              <td>trade, logistics</td>
+            </tr>
+            <tr>
+              <td><strong>YAI_AGENT</strong> <span style="color:var(--muted); font-size:0.85em;">(AI advisory)</span></td>
+              <td><span style="font-weight:700; color:var(--info);">1 — advisory</span></td>
+              <td>3</td>
+              <td><span class="cross">❌</span></td>
+              <td>diagnose only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:14px; font-size:0.9em; color:var(--muted);">
+        Authority modes defined in <code>.github/AUTHORITY_STATE.json</code>:
+        <code>direct</code> | <code>delegated</code> | <code>restricted</code> | <code>emergency</code>
+      </p>
+    </section>
+
+    <!-- SIGNING RULES -->
+    <section id="signing">
+      <h2>✍️ Signing Rules</h2>
+      <p>Source: <code>Governance Operating System/policy/governance_policy.yaml</code></p>
+      <div class="rule-grid">
+        <div class="rule-card low">
+          <div class="range">Complexity 1–3</div>
+          <div class="req">1 signer required</div>
+        </div>
+        <div class="rule-card medium">
+          <div class="range">Complexity 4–7</div>
+          <div class="req">2 signers required</div>
+        </div>
+        <div class="rule-card critical">
+          <div class="range">Complexity 8–10</div>
+          <div class="req">AA signature mandatory</div>
+        </div>
+      </div>
+      <div class="special-rule">
+        <strong>💰 Financial Rule:</strong> Payments &gt;€10,000 require multi-sign <em>regardless of complexity score</em>.<br>
+        <strong>🏭 Sector Baselines:</strong> <code>automotive</code> → baseline complexity 4 &nbsp;|&nbsp; <code>medical</code> → baseline complexity 6
+      </div>
+    </section>
+
+    <!-- YAI CONSTRAINTS -->
+    <section id="yai">
+      <h2>🤖 AI Agent (YAI) Hard Constraints</h2>
+      <p>Source of truth: <code>Governance Operating System/ai/llm_governance_context.json</code></p>
+      <div class="constraint-grid">
+        <div class="allow-box">
+          <h3>✅ YAI May Perform</h3>
+          <ul class="plain">
+            <li>diagnose</li>
+            <li>analysis</li>
+            <li>proposal</li>
+          </ul>
+        </div>
+        <div class="block-box">
+          <h3>🚫 YAI Permanently Blocked From</h3>
+          <ul class="plain">
+            <li>financial_execution</li>
+            <li>authority_override</li>
+            <li>policy_modification</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMAND SCHEMA -->
+    <section id="schema">
+      <h2>📋 Command Schema</h2>
+      <p>All commands must conform to <code>Governance Operating System/schemas/command_schema.json</code></p>
+      <div class="schema-grid">
+        <div class="schema-field">
+          <div class="fname">command_id</div>
+          <div class="fval">UUID — unique per command</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">actor</div>
+          <div class="fval">type: human | ai | delegated + id</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">action.type</div>
+          <div class="fval">GO | HOLD | DIAGNOSE</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">action.sector</div>
+          <div class="fval">trade | finance | compliance | system</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">complexity_score</div>
+          <div class="fval">1–10 integer</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">risk_level</div>
+          <div class="fval">low | medium | high</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">signer</div>
+          <div class="fval">authority_id string</div>
+        </div>
+        <div class="schema-field">
+          <div class="fname">gate_decision</div>
+          <div class="fval">ALLOW | BLOCK</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEDGER -->
+    <section id="ledger">
+      <h2>🔗 Ledger Format — Append-Only, Hash-Chained</h2>
+      <p>The ledger is <strong>blockchain-style chained</strong> via <code>previous_hash</code>. <strong>Never modify existing entries.</strong> Schema: <code>Governance Operating System/schemas/ledger_schema.json</code></p>
+      <div class="ledger-chain">
+        <div class="ledger-block">
+          <div class="ltitle">Entry N-1</div>
+          entry_id<br>command_id<br>decision: ALLOW<br>
+          <div class="lhash">hash: a3f9c1...</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="ledger-block">
+          <div class="ltitle">Entry N</div>
+          entry_id<br>command_id<br>decision: ALLOW<br>
+          previous_hash: a3f9c1...<br>
+          <div class="lhash">hash: b7d2e8...</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="ledger-block">
+          <div class="ltitle">Entry N+1</div>
+          entry_id<br>command_id<br>decision: BLOCK<br>
+          previous_hash: b7d2e8...<br>
+          <div class="lhash">hash: f1a4c9...</div>
+        </div>
+      </div>
+      <p style="margin-top:16px; font-size:0.9em;">
+        New entries require: <code>entry_id</code>, <code>command_id</code>, <code>decision</code>, <code>hash</code> (SHA256), <code>previous_hash</code>
+      </p>
+    </section>
+
+    <!-- EVIDENCE METADATA -->
+    <section id="evidence">
+      <h2>🧾 Evidence Metadata Pattern</h2>
+      <p>Every executed command produces an evidence record. See <code>Evidence Metadata Extension.json</code>.</p>
+      <div class="schema-grid">
+        <div class="schema-field"><div class="fname">event_id</div><div class="fval">e.g. EVT-2026-03-07-00045</div></div>
+        <div class="schema-field"><div class="fname">command</div><div class="fval">e.g. create_vehicle_offer</div></div>
+        <div class="schema-field"><div class="fname">actor</div><div class="fval">operator_02</div></div>
+        <div class="schema-field"><div class="fname">domain</div><div class="fval">CARSHUNTER | BPB | IBN_SINA</div></div>
+        <div class="schema-field"><div class="fname">authority_validated</div><div class="fval">true | false</div></div>
+        <div class="schema-field"><div class="fname">system_state</div><div class="fval">operational | audit | freeze…</div></div>
+        <div class="schema-field"><div class="fname">domain_risk_tier</div><div class="fval">integer 1–5</div></div>
+        <div class="schema-field"><div class="fname">hash</div><div class="fval">SHA256 string</div></div>
+      </div>
+    </section>
+
+    <!-- DOMAINS -->
+    <section id="domains">
+      <h2>🌐 Active Domains</h2>
+      <div class="domain-cards">
+        <div class="domain-card">
+          <div class="dname">CARSHUNTER</div>
+          <div class="dtag">automotive</div>
+          <ul>
+            <li>risk_tier: 2</li>
+            <li>authority_required: operator</li>
+            <li>baseline_complexity: 4</li>
+            <li>compliance_mode: standard</li>
+          </ul>
+        </div>
+        <div class="domain-card">
+          <div class="dname">BPB</div>
+          <div class="dtag">finance / advisory</div>
+          <ul>
+            <li>sector: finance</li>
+            <li>financial threshold: €10,000</li>
+            <li>multi-sign: required above threshold</li>
+            <li>org: BPB Solutions LTD</li>
+          </ul>
+        </div>
+        <div class="domain-card">
+          <div class="dname">IBN_SINA</div>
+          <div class="dtag">medical</div>
+          <ul>
+            <li>baseline_complexity: 6</li>
+            <li>high authority requirements</li>
+            <li>strict compliance_mode</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RUNTIME MODES -->
+    <section id="runtime">
+      <h2>⚙️ Runtime Modes</h2>
+      <h3>runtime_mode</h3>
+      <div class="mode-pills">
+        <div class="mode-pill dev">development</div>
+        <div class="mode-pill ops">operational</div>
+        <div class="mode-pill audit">audit</div>
+        <div class="mode-pill freeze">freeze</div>
+      </div>
+      <h3 style="margin-top:20px;">risk_level</h3>
+      <div class="mode-pills">
+        <div class="mode-pill ops">normal</div>
+        <div class="mode-pill audit">elevated</div>
+        <div class="mode-pill freeze">critical</div>
+      </div>
+      <div class="special-rule" style="margin-top:18px; background:#fff0f0; border-color:var(--danger);">
+        <strong>🔒 Freeze Rule:</strong> When <code>freeze_state: true</code>, no new commands may be executed under any circumstances.
+      </div>
+    </section>
+
+    <!-- KEY FILES -->
+    <section id="files">
+      <h2>📌 Key Reference Files</h2>
+      <ul class="file-list">
+        <li>
+          <span class="file-icon">📜</span>
+          <div>
+            <div class="file-path">Governance Operating System/policy/authority_registry.yaml</div>
+            <div class="file-desc">Who can act, in which sectors, at what authority level</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">📜</span>
+          <div>
+            <div class="file-path">Governance Operating System/policy/governance_policy.yaml</div>
+            <div class="file-desc">Signing rules, sector complexity baselines, financial thresholds</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">🔒</span>
+          <div>
+            <div class="file-path">.github/AUTHORITY_STATE.json</div>
+            <div class="file-desc">Live authority mode (direct | delegated | restricted | emergency)</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">📡</span>
+          <div>
+            <div class="file-path">Governance Operating System/SYSTEM_STATE.json</div>
+            <div class="file-desc">Live runtime mode and risk level</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">🌐</span>
+          <div>
+            <div class="file-path">Governance Operating System/DOMAIN_STATE.json</div>
+            <div class="file-desc">Per-domain operational state tracking</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">👤</span>
+          <div>
+            <div class="file-path">actor_manifest.json</div>
+            <div class="file-desc">Actor definitions with authority levels and execution rights</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">🤖</span>
+          <div>
+            <div class="file-path">Governance Operating System/ai/llm_governance_context.json</div>
+            <div class="file-desc">YAI constraints — allowed and blocked actions</div>
+          </div>
+        </li>
+        <li>
+          <span class="file-icon">📊</span>
+          <div>
+            <div class="file-path">Governance Operating System/schemas/command_schema.json</div>
+            <div class="file-desc">Canonical command structure for all governance actions</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <footer>
+    <strong>BPB Solutions LTD</strong> | AI Agent Copilot Instructions Review<br>
+    Last updated: <strong>8 March 2026</strong><br>
+    <span style="font-size:0.85em; opacity:0.7;">Prepared for BPB Shab · Source: .github/copilot-instructions.md · PMS_GOVERN v1.0</span>
+  </footer>
+
+</div><!-- /container -->
+</body>
+</html>

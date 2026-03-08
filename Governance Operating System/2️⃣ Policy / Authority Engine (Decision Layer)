@@ -1,0 +1,23 @@
+You also clearly have:
+	•	governance_policy.yaml
+	•	AL_RULES.md
+	•	governance documents
+	•	authority logic references
+
+This becomes the decision engine.
+
+Example conceptual logic:
+IF actor_role == dealer
+AND domain == CARSHUNTER
+AND command == create_offer
+THEN allow
+ELSE reject
+So runtime flow becomes:
+Command
+↓
+Authority check
+↓
+Policy evaluation
+↓
+Decision
+This is the governance brain of the system.

@@ -1,0 +1,25 @@
+{
+  "actors": [
+    {
+      "actor_id": "AA",
+      "type": "architect",
+      "authority_level": 5,
+      "organization": "Alcatara",
+      "execution_rights": true
+    },
+    {
+      "actor_id": "BPB_OPERATOR",
+      "type": "operator",
+      "authority_level": 3,
+      "organization": "BPB Solutions LTD",
+      "execution_rights": true
+    },
+    {
+      "actor_id": "YAI_AGENT",
+      "type": "ai_agent",
+      "authority_level": 1,
+      "organization": "PMS_GOVERN",
+      "execution_rights": false
+    }
+  ]
+}
