@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMS_GOVERN — AI Agent Instructions · BPB Shab Review</title>
+  <style>
+    :root {
+      --primary: #0d2b2e;
+      --navy: #1a3a52;
+      --slate: #2c3e50;
+      --gold: #d4af37;
+      --gold-soft: #f2cc8f;
+      --white: #ffffff;
+      --muted: #8a9bb0;
+      --success: #27ae60;
+      --info: #3498db;
+      --warn: #e67e22;
+      --danger: #c0392b;
+      --bg-slide: #0d1f22;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-slide); }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+      z-index: 999; transition: width 0.5s ease;
+    }
+
+    /* ── SLIDE COUNTER ── */
+    #slide-counter {
+      position: fixed; top: 16px; right: 20px;
+      font-size: 0.8em; color: rgba(255,255,255,0.35);
+      letter-spacing: 1px; z-index: 999;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── NAVIGATION DOTS ── */
+    #nav-dots {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 999;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dot.active { background: var(--gold); transform: scale(1.3); }
+
+    /* ── NAV ARROWS ── */
+    .nav-btn {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5); border-radius: 50%;
+      width: 44px; height: 44px; font-size: 1.2em;
+      cursor: pointer; z-index: 999; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-btn:hover { background: rgba(212,175,55,0.2); color: var(--gold); border-color: var(--gold); }
+    .nav-btn:disabled { opacity: 0.15; cursor: default; }
+    #btn-prev { left: 16px; }
+    #btn-next { right: 16px; }
+
+    /* ── SLIDES WRAPPER ── */
+    #slides { width: 100%; height: 100%; position: relative; }
+
+    /* ── SINGLE SLIDE ── */
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 80px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      transform: translateY(30px);
+      text-align: center;
+    }
+    .slide.active {
+      opacity: 1; pointer-events: all; transform: translateY(0);
+    }
+    .slide.out {
+      opacity: 0; transform: translateY(-30px);
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .slide-label {
+      font-size: 0.72em; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px; font-weight: 600;
+    }
+    .slide h1 {
+      font-size: clamp(2em, 5vw, 3.6em); font-weight: 800;
+      color: var(--white); line-height: 1.15; margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    .slide h2 {
+      font-size: clamp(1.4em, 3.5vw, 2.4em); font-weight: 700;
+      color: var(--white); margin-bottom: 18px;
+    }
+    .slide p {
+      color: rgba(255,255,255,0.72); font-size: clamp(0.95em, 2vw, 1.15em);
+      max-width: 720px; line-height: 1.75; margin-bottom: 12px;
+    }
+    .gold-line {
+      width: 60px; height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+      border-radius: 2px; margin: 0 auto 24px;
+    }
+    code {
+      font-family: 'Courier New', monospace; background: rgba(255,255,255,0.08);
+      padding: 2px 8px; border-radius: 4px; font-size: 0.9em; color: var(--gold-soft);
+    }
+
+    /* ── TITLE SLIDE ── */
+    .slide.title-slide { background: radial-gradient(ellipse at 30% 60%, #1a4a52 0%, var(--bg-slide) 65%); }
+    .title-slide .subtitle {
+      color: rgba(255,255,255,0.6); font-size: 1.1em; margin-bottom: 28px;
+    }
+    .badge-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+    .badge {
+      padding: 6px 18px; border-radius: 50px; font-size: 0.78em; font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .badge.gold  { background: var(--gold); color: var(--primary); }
+    .badge.blue  { background: var(--info); color: #fff; }
+    .badge.green { background: var(--success); color: #fff; }
+
+    /* ── PIPELINE ── */
+    .pipeline {
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: 8px; justify-content: center; margin-top: 24px;
+    }
+    .pipe-step {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white); padding: 10px 18px; border-radius: 8px;
+      font-size: 0.88em; font-weight: 600; white-space: nowrap;
+    }
+    .pipe-arrow { color: var(--gold); font-size: 1.4em; font-weight: 700; }
+
+    /* ── STATE CHIPS ── */
+    .state-req { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+    .state-chip {
+      background: rgba(52,152,219,0.15); border: 2px solid var(--info);
+      color: #7ecbf5; padding: 8px 18px; border-radius: 8px;
+      font-size: 0.9em; font-weight: 700;
+    }
+    .state-chip.result { background: rgba(212,175,55,0.15); border-color: var(--gold); color: var(--gold); }
+
+    /* ── AUTHORITY TABLE ── */
+    .auth-table { width: 100%; max-width: 780px; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; text-align: left; }
+    .auth-table thead th { background: rgba(255,255,255,0.07); color: var(--gold-soft); padding: 12px 16px; font-size: 0.8em; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
+    .auth-table tbody td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); color: rgba(255,255,255,0.82); vertical-align: middle; }
+    .auth-table tbody tr:hover td { background: rgba(255,255,255,0.04); }
+    .tick { color: var(--success); } .cross { color: var(--danger); }
+    .lvl-5 { color: #e74c3c; font-weight: 700; }
+    .lvl-3 { color: var(--warn); font-weight: 700; }
+    .lvl-1 { color: var(--info); font-weight: 700; }
+
+    /* ── RULE CARDS ── */
+    .rule-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 20px; max-width: 700px; width: 100%; }
+    .rule-card { border-radius: 10px; padding: 20px; text-align: center; border: 2px solid; }
+    .rule-card .range { font-size: 1.3em; font-weight: 700; margin-bottom: 6px; }
+    .rule-card .req { font-size: 0.88em; opacity: 0.7; }
+    .rule-card.low    { border-color: var(--success); background: rgba(39,174,96,0.1); color: #5ddb90; }
+    .rule-card.medium { border-color: var(--warn);    background: rgba(230,126,34,0.1); color: #f0a060; }
+    .rule-card.critical { border-color: var(--danger); background: rgba(192,57,43,0.1); color: #e67e70; }
+    .special-rule {
+      margin-top: 16px; background: rgba(212,175,55,0.08);
+      border-left: 4px solid var(--gold); padding: 12px 18px; border-radius: 6px;
+      font-size: 0.9em; color: rgba(255,255,255,0.75); text-align: left; max-width: 700px; width: 100%;
+    }
+
+    /* ── CONSTRAINT GRID ── */
+    .constraint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; max-width: 680px; width: 100%; }
+    .allow-box, .block-box { border-radius: 10px; padding: 20px 24px; text-align: left; }
+    .allow-box { background: rgba(39,174,96,0.1); border: 2px solid var(--success); }
+    .block-box { background: rgba(192,57,43,0.1);  border: 2px solid var(--danger); }
+    .allow-box h3 { color: var(--success); margin-bottom: 12px; font-size: 0.95em; }
+    .block-box h3 { color: var(--danger);  margin-bottom: 12px; font-size: 0.95em; }
+    ul.plain { list-style: none; padding: 0; }
+    ul.plain li { color: rgba(255,255,255,0.75); font-size: 0.9em; padding: 4px 0; }
+    ul.plain li::before { content: "› "; color: var(--gold); font-weight: 700; }
+
+    /* ── SCHEMA GRID ── */
+    .schema-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 10px; margin-top: 18px; max-width: 780px; width: 100%; }
+    .schema-field { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 14px; text-align: left; }
+    .schema-field .fname { font-family: 'Courier New', monospace; font-weight: 700; color: var(--gold-soft); font-size: 0.85em; }
+    .schema-field .fval  { color: rgba(255,255,255,0.5); font-size: 0.78em; margin-top: 4px; }
+
+    /* ── LEDGER CHAIN ── */
+    .ledger-chain { display: flex; align-items: stretch; gap: 0; margin-top: 22px; max-width: 760px; width: 100%; }
+    .ledger-block { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); padding: 16px 14px; font-family: 'Courier New', monospace; font-size: 0.77em; color: #cde8ff; text-align: left; }
+    .ledger-block:first-child { border-radius: 10px 0 0 10px; }
+    .ledger-block:last-child  { border-radius: 0 10px 10px 0; }
+    .ledger-block .ltitle { color: var(--gold); font-weight: 700; font-size: 0.88em; margin-bottom: 8px; }
+    .ledger-block .lhash  { color: var(--gold-soft); font-size: 0.73em; margin-top: 8px; word-break: break-all; opacity: 0.8; }
+    .chain-arrow { display: flex; align-items: center; color: var(--gold); font-size: 1.5em; padding: 0 2px; align-self: center; }
+
+    /* ── DOMAIN CARDS ── */
+    .domain-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 18px; max-width: 780px; width: 100%; }
+    .domain-card { border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 20px; text-align: left; background: rgba(255,255,255,0.03); }
+    .domain-card .dname { font-size: 1.05em; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .domain-card .dtag { display: inline-block; background: var(--navy); color: #aac8e0; font-size: 0.72em; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .domain-card ul { padding-left: 14px; font-size: 0.85em; color: rgba(255,255,255,0.55); }
+    .domain-card li { margin: 4px 0; }
+
+    /* ── MODE PILLS ── */
+    .mode-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+    .mode-pill { padding: 8px 22px; border-radius: 50px; font-size: 0.88em; font-weight: 600; border: 2px solid; }
+    .mode-pill.dev   { border-color: var(--info);    color: var(--info);    background: rgba(52,152,219,0.1); }
+    .mode-pill.ops   { border-color: var(--success); color: var(--success); background: rgba(39,174,96,0.1); }
+    .mode-pill.audit { border-color: var(--warn);    color: var(--warn);    background: rgba(230,126,34,0.1); }
+    .mode-pill.freeze{ border-color: var(--danger);  color: var(--danger);  background: rgba(192,57,43,0.1); }
+
+    /* ── FILE LIST ── */
+    .file-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; max-width: 780px; width: 100%; text-align: left; }
+    .file-item { display: flex; gap: 10px; align-items: flex-start; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px; }
+    .file-icon { font-size: 1.1em; flex-shrink: 0; }
+    .file-path { font-family: 'Courier New', monospace; font-size: 0.78em; color: var(--gold-soft); font-weight: 600; }
+    .file-desc { font-size: 0.77em; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    /* ── DIR LAYOUT ── */
+    .dir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; max-width: 700px; width: 100%; text-align: left; }
+    .dir-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 14px 16px; }
+    .dir-item .dpath { font-family: 'Courier New', monospace; color: var(--gold-soft); font-weight: 700; font-size: 0.88em; margin-bottom: 4px; }
+    .dir-item .ddesc { font-size: 0.82em; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* ── CLOSING SLIDE ── */
+    .slide.closing { background: radial-gradient(ellipse at 70% 40%, #1a3a52 0%, var(--bg-slide) 65%); }
+    .closing .big-check { font-size: 4em; margin-bottom: 16px; }
+
+    /* ── KEYBOARD HINT ── */
+    #keyboard-hint {
+      position: fixed; bottom: 60px; right: 20px;
+      font-size: 0.72em; color: rgba(255,255,255,0.2);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 40px 24px; }
+      .rule-grid, .domain-cards { grid-template-columns: 1fr; }
+      .constraint-grid, .file-grid, .dir-grid { grid-template-columns: 1fr; }
+      .ledger-chain { flex-direction: column; }
+      .ledger-block:first-child { border-radius: 10px 10px 0 0; }
+      .ledger-block:last-child  { border-radius: 0 0 10px 10px; }
+      .chain-arrow { transform: rotate(90deg); align-self: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="slide-counter">1 / 12</div>
+<button class="nav-btn" id="btn-prev" onclick="changeSlide(-1)" disabled>‹</button>
+<button class="nav-btn" id="btn-next" onclick="changeSlide(1)">›</button>
+<div id="nav-dots"></div>
+<div id="keyboard-hint">← → keys or click arrows</div>
+
+<div id="slides">
+
+  <!-- ── SLIDE 1: TITLE ── -->
+  <div class="slide title-slide active" id="slide-0">
+    <div class="slide-label">BPB Solutions LTD · Review Session · 8 March 2026</div>
+    <h1>PMS_GOVERN</h1>
+    <div class="gold-line"></div>
+    <p class="title-slide subtitle">AI Agent Copilot Instructions — Governance Operating Guide</p>
+    <p>A complete walkthrough of how AI coding agents should understand and operate within the PMS_GOVERN governance system. Prepared for <strong style="color:var(--gold);">BPB Shab</strong>.</p>
+    <div class="badge-row">
+      <span class="badge gold">FOR REVIEW</span>
+      <span class="badge blue">YAI-ADVISORY</span>
+      <span class="badge green">8 MAR 2026</span>
+      <span class="badge gold">AUDIT-READY</span>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 2: ARCHITECTURE ── -->
+  <div class="slide" id="slide-1">
+    <div class="slide-label">Architecture</div>
+    <h2>🏛 Command → QGED Gate → Ledger</h2>
+    <div class="gold-line"></div>
+    <p>Every action in the system flows through a single governed pipeline.<br>No command ever bypasses this chain.</p>
+    <div class="pipeline">
+      <div class="pipe-step">Command Interface</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">Authority / Policy Engine</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">Execution Layer</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">Evidence Ledger</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">State Freeze</div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 3: THREE-PART CONTEXT ── -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label">Architecture · Three-Part Context</div>
+    <h2>⚡ QGED Requires Three Inputs</h2>
+    <div class="gold-line"></div>
+    <p>QGED cannot make a decision without all three state inputs simultaneously. Without them — risk level, domain conditions, and authority escalation are unknown.</p>
+    <div class="state-req">
+      <div class="state-chip">SYSTEM_STATE</div>
+      <div class="state-chip" style="border:none; background:none; color:rgba(255,255,255,0.4);">+</div>
+      <div class="state-chip">DOMAIN_STATE</div>
+      <div class="state-chip" style="border:none; background:none; color:rgba(255,255,255,0.4);">+</div>
+      <div class="state-chip">AUTHORITY_STATE</div>
+      <div class="state-chip" style="border:none; background:none; color:rgba(255,255,255,0.4);">=</div>
+      <div class="state-chip result">Gate Can Decide</div>
+    </div>
+    <p style="margin-top:24px; font-size:0.9em; color:rgba(255,255,255,0.45);">Missing any one of the three → <strong style="color:var(--danger);">no command may proceed</strong></p>
+  </div>
+
+  <!-- ── SLIDE 4: DIRECTORY LAYOUT ── -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label">Structure</div>
+    <h2>📁 Directory Layout</h2>
+    <div class="gold-line"></div>
+    <div class="dir-grid">
+      <div class="dir-item">
+        <div class="dpath">PMS_GOVERN/</div>
+        <div class="ddesc">Canonical implementation tree — <code>CORE/</code> <code>LAW/</code> <code>STATE/</code> <code>LEDGER/</code> <code>MANIFEST/</code> <code>DOMAINS/</code> <code>AI/</code></div>
+      </div>
+      <div class="dir-item">
+        <div class="dpath">Governance Operating System/</div>
+        <div class="ddesc">Parallel runtime organisation — its own <code>schemas/</code> <code>policy/</code> <code>ledger/</code> and live state files</div>
+      </div>
+      <div class="dir-item">
+        <div class="dpath">PMS_GOVERN/CORE/</div>
+        <div class="ddesc">Four engines: <code>authority_engine</code> · <code>command_engine</code> · <code>execution_runtime</code> · <code>policy_engine</code></div>
+      </div>
+      <div class="dir-item">
+        <div class="dpath">Root-level JSON/YAML</div>
+        <div class="ddesc">Prototype/reference copies only — <strong style="color:var(--gold-soft);">canonical versions live inside subdirectories</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 5: AUTHORITY CHAIN ── -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label">Authority</div>
+    <h2>🔑 Authority Chain</h2>
+    <div class="gold-line"></div>
+    <table class="auth-table">
+      <thead>
+        <tr>
+          <th>Actor</th><th>Level</th><th>Max Complexity</th><th>Execution</th><th>Sectors</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:#fff;">AA</strong> <span style="opacity:0.5; font-size:0.85em;">· Alaa Atia</span></td>
+          <td><span class="lvl-5">5 — sovereign</span></td>
+          <td>10</td>
+          <td><span class="tick">✅</span></td>
+          <td>All sectors</td>
+        </tr>
+        <tr>
+          <td><strong style="color:#fff;">BPB_OPERATOR</strong> <span style="opacity:0.5; font-size:0.85em;">· delegated</span></td>
+          <td><span class="lvl-3">3 — operational</span></td>
+          <td>5</td>
+          <td><span class="tick">✅</span></td>
+          <td>trade, logistics</td>
+        </tr>
+        <tr>
+          <td><strong style="color:#fff;">YAI_AGENT</strong> <span style="opacity:0.5; font-size:0.85em;">· AI advisory</span></td>
+          <td><span class="lvl-1">1 — advisory</span></td>
+          <td>3</td>
+          <td><span class="cross">❌</span></td>
+          <td>diagnose only</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px; font-size:0.82em; color:rgba(255,255,255,0.4);">
+      Authority modes in <code>.github/AUTHORITY_STATE.json</code>: <code>direct</code> · <code>delegated</code> · <code>restricted</code> · <code>emergency</code>
+    </p>
+  </div>
+
+  <!-- ── SLIDE 6: SIGNING RULES ── -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label">Policy</div>
+    <h2>✍️ Signing Rules</h2>
+    <div class="gold-line"></div>
+    <p>Source: <code>Governance Operating System/policy/governance_policy.yaml</code></p>
+    <div class="rule-grid">
+      <div class="rule-card low">
+        <div class="range">1 – 3</div>
+        <div class="req">1 signer required</div>
+      </div>
+      <div class="rule-card medium">
+        <div class="range">4 – 7</div>
+        <div class="req">2 signers required</div>
+      </div>
+      <div class="rule-card critical">
+        <div class="range">8 – 10</div>
+        <div class="req">AA signature mandatory</div>
+      </div>
+    </div>
+    <div class="special-rule">
+      <strong style="color:var(--gold);">💰 Financial:</strong> Payments &gt;€10,000 require multi-sign regardless of complexity.<br>
+      <strong style="color:var(--gold);">🏭 Sectors:</strong> <code>automotive</code> baseline complexity → 4 &nbsp;|&nbsp; <code>medical</code> baseline complexity → 6
+    </div>
+  </div>
+
+  <!-- ── SLIDE 7: YAI CONSTRAINTS ── -->
+  <div class="slide" id="slide-6">
+    <div class="slide-label">AI Constraints</div>
+    <h2>🤖 YAI Hard Constraints</h2>
+    <div class="gold-line"></div>
+    <p>Source: <code>Governance Operating System/ai/llm_governance_context.json</code></p>
+    <div class="constraint-grid">
+      <div class="allow-box">
+        <h3>✅ YAI May Perform</h3>
+        <ul class="plain">
+          <li>diagnose</li>
+          <li>analysis</li>
+          <li>proposal</li>
+        </ul>
+      </div>
+      <div class="block-box">
+        <h3>🚫 Permanently Blocked</h3>
+        <ul class="plain">
+          <li>financial_execution</li>
+          <li>authority_override</li>
+          <li>policy_modification</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:20px; font-size:0.88em; color:rgba(255,255,255,0.4);">Governance policy overrides all AI suggestions. YAI proposes — humans and authority chain decide.</p>
+  </div>
+
+  <!-- ── SLIDE 8: COMMAND SCHEMA ── -->
+  <div class="slide" id="slide-7">
+    <div class="slide-label">Schema</div>
+    <h2>📋 Command Schema</h2>
+    <div class="gold-line"></div>
+    <p>All commands must conform to <code>Governance Operating System/schemas/command_schema.json</code></p>
+    <div class="schema-grid">
+      <div class="schema-field"><div class="fname">command_id</div><div class="fval">UUID</div></div>
+      <div class="schema-field"><div class="fname">actor.type</div><div class="fval">human | ai | delegated</div></div>
+      <div class="schema-field"><div class="fname">action.type</div><div class="fval">GO | HOLD | DIAGNOSE</div></div>
+      <div class="schema-field"><div class="fname">action.sector</div><div class="fval">trade | finance | compliance | system</div></div>
+      <div class="schema-field"><div class="fname">complexity_score</div><div class="fval">1–10 integer</div></div>
+      <div class="schema-field"><div class="fname">risk_level</div><div class="fval">low | medium | high</div></div>
+      <div class="schema-field"><div class="fname">signer</div><div class="fval">authority_id</div></div>
+      <div class="schema-field"><div class="fname">gate_decision</div><div class="fval">ALLOW | BLOCK</div></div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 9: LEDGER ── -->
+  <div class="slide" id="slide-8">
+    <div class="slide-label">Ledger</div>
+    <h2>🔗 Append-Only Hash-Chained Ledger</h2>
+    <div class="gold-line"></div>
+    <p>Blockchain-style chained via <code>previous_hash</code>. <strong style="color:var(--danger);">Never modify existing entries.</strong></p>
+    <div class="ledger-chain">
+      <div class="ledger-block">
+        <div class="ltitle">Entry N−1</div>
+        entry_id<br>command_id<br>decision: ALLOW
+        <div class="lhash">hash: a3f9c1d8…</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="ledger-block">
+        <div class="ltitle">Entry N</div>
+        entry_id<br>command_id<br>decision: ALLOW<br>prev: a3f9c1d8…
+        <div class="lhash">hash: b7d2e845…</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="ledger-block">
+        <div class="ltitle">Entry N+1</div>
+        entry_id<br>command_id<br>decision: BLOCK<br>prev: b7d2e845…
+        <div class="lhash">hash: f1a4c9e2…</div>
+      </div>
+    </div>
+    <p style="margin-top:14px; font-size:0.82em; color:rgba(255,255,255,0.4);">Schema: <code>Governance Operating System/schemas/ledger_schema.json</code></p>
+  </div>
+
+  <!-- ── SLIDE 10: DOMAINS ── -->
+  <div class="slide" id="slide-9">
+    <div class="slide-label">Domains</div>
+    <h2>🌐 Active Domains</h2>
+    <div class="gold-line"></div>
+    <div class="domain-cards">
+      <div class="domain-card">
+        <div class="dname">CARSHUNTER</div>
+        <div class="dtag">automotive</div>
+        <ul>
+          <li>risk_tier: 2</li>
+          <li>authority: operator</li>
+          <li>baseline complexity: 4</li>
+          <li>compliance: standard</li>
+        </ul>
+      </div>
+      <div class="domain-card">
+        <div class="dname">BPB</div>
+        <div class="dtag">finance / advisory</div>
+        <ul>
+          <li>sector: finance</li>
+          <li>threshold: €10,000</li>
+          <li>multi-sign above threshold</li>
+          <li>org: BPB Solutions LTD</li>
+        </ul>
+      </div>
+      <div class="domain-card">
+        <div class="dname">IBN_SINA</div>
+        <div class="dtag">medical</div>
+        <ul>
+          <li>baseline complexity: 6</li>
+          <li>high authority required</li>
+          <li>strict compliance mode</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 11: RUNTIME MODES ── -->
+  <div class="slide" id="slide-10">
+    <div class="slide-label">Runtime</div>
+    <h2>⚙️ Runtime Modes & Risk Levels</h2>
+    <div class="gold-line"></div>
+    <p style="margin-bottom:6px; font-size:0.88em; color:rgba(255,255,255,0.5);">runtime_mode</p>
+    <div class="mode-pills">
+      <div class="mode-pill dev">development</div>
+      <div class="mode-pill ops">operational</div>
+      <div class="mode-pill audit">audit</div>
+      <div class="mode-pill freeze">freeze</div>
+    </div>
+    <p style="margin-top:18px; margin-bottom:6px; font-size:0.88em; color:rgba(255,255,255,0.5);">risk_level</p>
+    <div class="mode-pills">
+      <div class="mode-pill ops">normal</div>
+      <div class="mode-pill audit">elevated</div>
+      <div class="mode-pill freeze">critical</div>
+    </div>
+    <div class="special-rule" style="margin-top:20px; background:rgba(192,57,43,0.08); border-color:var(--danger);">
+      <strong style="color:var(--danger);">🔒 Freeze Rule:</strong> When <code>freeze_state: true</code>, no new commands may be executed under any circumstances.
+    </div>
+  </div>
+
+  <!-- ── SLIDE 12: CLOSING ── -->
+  <div class="slide closing" id="slide-11">
+    <div class="big-check">✅</div>
+    <div class="slide-label">Review Complete</div>
+    <h1 style="font-size:2.4em;">BPB Solutions LTD</h1>
+    <div class="gold-line"></div>
+    <p>PMS_GOVERN — AI Agent Copilot Instructions reviewed.<br>Source: <code>.github/copilot-instructions.md</code> · v1.0</p>
+    <p style="font-size:0.88em; color:rgba(255,255,255,0.35); margin-top:8px;">For the full static document, see <code>Copilot_Instructions_Review.html</code></p>
+    <div class="badge-row" style="margin-top:24px;">
+      <span class="badge gold">PMS_GOVERN v1.0</span>
+      <span class="badge green">8 MARCH 2026</span>
+      <span class="badge blue">PREPARED FOR BPB SHAB</span>
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<script>
+  const TOTAL = 12;
+  let current = 0;
+
+  const progressBar = document.getElementById('progress-bar');
+  const counter     = document.getElementById('slide-counter');
+  const btnPrev     = document.getElementById('btn-prev');
+  const btnNext     = document.getElementById('btn-next');
+  const dotsEl      = document.getElementById('nav-dots');
+
+  // Build dots
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.dot');
+
+    slides[current].classList.remove('active');
+    slides[current].classList.add('out');
+    setTimeout(() => slides[current].classList.remove('out'), 600);
+
+    dots[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+
+    progressBar.style.width = ((current + 1) / TOTAL * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + TOTAL;
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === TOTAL - 1;
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < TOTAL) goTo(next);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown'  || e.key === ' ') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  changeSlide(-1);
+  });
+
+  // Touch/swipe
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+  });
+</script>
+</body>
+</html>

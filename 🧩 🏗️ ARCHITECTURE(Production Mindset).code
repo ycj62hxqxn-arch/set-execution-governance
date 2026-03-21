@@ -1,0 +1,13 @@
+Frontend (Your Page)
+        ↓
+Backend (Node.js API)
+        ↓
+Control Layers:
+   1. Parser
+   2. Logic Filter
+   3. Rule Engine
+   4. Authority Gate
+        ↓
+OpenAI API
+        ↓
+Controlled Response

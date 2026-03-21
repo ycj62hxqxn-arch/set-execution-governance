@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AA Internal Last 8 Weeks Deep Report</title>
+  <style>
+    :root {
+      --bg: #0f1722;
+      --bg2: #172231;
+      --card: rgba(255,255,255,0.05);
+      --text: #f4efe5;
+      --muted: rgba(244,239,229,0.72);
+      --gold: #c6a85a;
+      --line: rgba(198,168,90,0.26);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top right, rgba(198,168,90,0.16), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .page {
+      width: min(1120px, calc(100% - 36px));
+      margin: 28px auto 60px;
+      background: color-mix(in srgb, var(--bg2) 88%, transparent);
+      border: 1px solid var(--line);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+    }
+    .hero {
+      padding: 52px 52px 36px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      font: 700 12px/1.2 Arial, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.02;
+      margin-bottom: 14px;
+      max-width: 920px;
+    }
+    .subtitle {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 840px;
+    }
+    .content {
+      padding: 28px 52px 56px;
+    }
+    h2 {
+      font-size: 28px;
+      margin: 28px 0 12px;
+    }
+    p {
+      margin: 10px 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    ul {
+      padding-left: 22px;
+      margin: 10px 0 18px;
+    }
+    li {
+      margin: 9px 0;
+      color: var(--muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 24px;
+    }
+    .cards3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 18px 18px;
+      border-radius: 14px;
+    }
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .callout {
+      padding: 18px 20px;
+      border-left: 4px solid var(--gold);
+      background: var(--card);
+      border-radius: 8px;
+      margin: 18px 0 24px;
+    }
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .event {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .event .meta {
+      font: 700 12px/1.2 "Courier New", monospace;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 24px;
+      border: 1px solid var(--line);
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      font: 700 12px/1.2 Arial, sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    td {
+      color: var(--muted);
+    }
+    .diagram {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      padding: 16px;
+      margin: 18px 0 24px;
+    }
+    .footer {
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 15px;
+      color: var(--muted);
+    }
+    @media (max-width: 900px) {
+      .page { width: min(100%, calc(100% - 18px)); }
+      .hero, .content { padding-left: 20px; padding-right: 20px; }
+      .grid, .cards3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <section class="hero">
+      <div class="eyebrow">BPB Solutions LTD / Last 8 Weeks Program Scope</div>
+      <h1>AA Internal Last 8 Weeks Deep Report</h1>
+      <div class="subtitle">Internal deep report focused on sovereign control, consolidation, risks, and architecture maturity.</div>
+    </section>
+    <section class="content">
+      <h2>Internal Reading</h2><p>This internal cut emphasizes sovereign control, freeze-state discipline, and architecture consolidation under Alaa Atia.</p><h2>Milestones and Deliverables</h2><div class="timeline">
+    <div class="event">
+      <div class="meta">Week 1 / January 23 to January 29, 2026</div>
+      <h3>Authority doctrine and execution-control framing stabilized</h3>
+      <ul><li>The governance doctrine moved from conceptual framing into an authority-first execution model.</li><li>The BIG G layer, Alcatara decision logic, and PMS_GOVERN relationships were aligned into one stack.</li><li>The shift from authority creation to authority maintenance became a working project principle.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 2 / January 30 to February 5, 2026</div>
+      <h3>CARSHUNTER inventory and controlled public interface model expanded</h3>
+      <ul><li>Vehicle inventory transformation workflows were formalized for public and internal cuts.</li><li>Two-tier disclosure patterns were reinforced: public-safe view vs. authority-triggered full detail.</li><li>Offer, review, and evidence packaging patterns became reusable across automotive cases.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 3 / February 6 to February 12, 2026</div>
+      <h3>PMS_GOVERN core governance stack advanced toward canonical form</h3>
+      <ul><li>Command schema, actor registry, governance context, and system manifest assets were consolidated.</li><li>QGED gate logic and authority validation became central to the runtime narrative.</li><li>AI was consistently framed as proposal-capable but non-sovereign.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 4 / February 13 to February 19, 2026</div>
+      <h3>Ledger, audit, evidence, and freeze-state ideas became operational</h3>
+      <ul><li>Immutable ledger, evidence metadata, and snapshot/freeze concepts were pushed into explicit artifacts.</li><li>Runtime state and provenance tracking were elevated from notes into documented system surfaces.</li><li>Audit-ready language matured across internal and public architecture materials.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 5 / February 20 to February 26, 2026</div>
+      <h3>Presentation and publication layers scaled across BPB and platform surfaces</h3>
+      <ul><li>Reveal-style architecture presentations, public overviews, and board-facing materials expanded.</li><li>Commercial, internal, and public messaging split more clearly into audience-specific cuts.</li><li>Narrative consistency improved between system architecture, strategy, and external positioning.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 6 / February 27 to March 5, 2026</div>
+      <h3>GTC4u augmented governance presentation stack and deployment framing matured</h3>
+      <ul><li>GTC4u platform presentation assets were produced in branded, internal, and enhanced forms.</li><li>Domain deployment language covered automotive, finance, logistics, AI control, and regulated sectors.</li><li>Multi-party onboarding, validation, and risk assessment began to appear as platform features rather than side notes.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 7 / March 6 to March 12, 2026</div>
+      <h3>Session reports, SHAP milestones, and change-impact summaries deepened operational memory</h3>
+      <ul><li>SHAP department milestones and BPB comprehensive systems summaries consolidated program scope.</li><li>Session analysis, lessons learned, and change-impact materials strengthened retrospective governance.</li><li>The public/internal/audit-ready document separation became a repeatable documentation model.</li></ul>
+    </div>
+
+    <div class="event">
+      <div class="meta">Week 8 / March 13 to March 20, 2026</div>
+      <h3>Freeze-state discipline, rebuild work, and export packaging completed the cycle</h3>
+      <ul><li>The ALAa ATIA x THE BIG G interface was repaired, restyled, and integrated with BPB visual authority.</li><li>A formal freeze checkpoint was recorded with runtime state, snapshot metadata, and audit records.</li><li>A broken governance reveal file was rebuilt into a complete standalone slide deck with PPTX, PDF, and DOCX exports.</li></ul>
+    </div>
+    </div><h2>Program Risks</h2><div class="grid"><div class="card"><h3>Authority Concentration</h3><p>Strong control is an advantage, but future scaling needs formal delegation models that do not erode doctrine.</p></div><div class="card"><h3>Evidence Drift</h3><p>Runtime state, ledgers, public decks, and narrative summaries need continued synchronization to avoid symbolic governance.</p></div><div class="card"><h3>Platform Fragmentation</h3><p>GTC4u, GTS4u, CARSHUNTER, and BPB materials need ongoing identity alignment so onboarding and deployment stay coherent.</p></div><div class="card"><h3>Operational Load</h3><p>Rapid document creation across many audiences increases the value of templates, generation scripts, and canonical source files.</p></div></div>
+      <div class="footer">Scope window: January 23, 2026 to March 20, 2026 | Prepared from repo milestones, platform summaries, reveal decks, session reports, and governance artifacts.</div>
+    </section>
+  </article>
+</body>
+</html>

@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project AI Manifest - BPB Governance Architecture Reveal</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg-2: #121b2d;
+      --panel: rgba(17, 24, 39, 0.72);
+      --panel-soft: rgba(255, 255, 255, 0.05);
+      --line: rgba(198, 168, 90, 0.28);
+      --gold: #c6a85a;
+      --gold-soft: #e7d2a0;
+      --white: #f7f4ef;
+      --muted: rgba(247, 244, 239, 0.68);
+      --blue: #63a7ff;
+      --green: #4cc38a;
+      --red: #e06f67;
+      --amber: #f0b35b;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(198, 168, 90, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(99, 167, 255, 0.12), transparent 24%),
+        linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 55%, #0a0f17 100%);
+      color: var(--white);
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(198, 168, 90, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(198, 168, 90, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+    }
+
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), #f1ddaf);
+      z-index: 999;
+      transition: width 0.35s ease;
+    }
+
+    #counter, #class-tag {
+      position: fixed;
+      top: 16px;
+      z-index: 999;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #counter { right: 22px; }
+    #class-tag { left: 22px; color: var(--gold); }
+
+    .nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--gold);
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      transition: 0.2s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: rgba(198, 168, 90, 0.14);
+      border-color: rgba(198, 168, 90, 0.55);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.18;
+      cursor: default;
+    }
+
+    #prev { left: 18px; }
+    #next { right: 18px; }
+
+    #dots {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      max-width: 80vw;
+      z-index: 999;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 0;
+      background: rgba(255, 255, 255, 0.18);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
+    }
+
+    #slides {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 84px 72px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(24px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .slide-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--gold);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .slide h1 {
+      font-size: clamp(2.4rem, 5vw, 4.4rem);
+      line-height: 1.02;
+      text-align: center;
+      margin-bottom: 16px;
+      max-width: 980px;
+    }
+
+    .slide h2 {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .slide p {
+      max-width: 920px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+      font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+    }
+
+    .gold-line {
+      width: 62px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), #f2deae);
+      margin: 0 auto 24px;
+    }
+
+    .hero-badges, .badge-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .badge {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+    }
+
+    .badge.gold { background: rgba(198, 168, 90, 0.16); color: var(--gold-soft); border-color: rgba(198, 168, 90, 0.38); }
+    .badge.blue { background: rgba(99, 167, 255, 0.14); color: #d9e9ff; border-color: rgba(99, 167, 255, 0.32); }
+    .badge.green { background: rgba(76, 195, 138, 0.14); color: #d8f6e7; border-color: rgba(76, 195, 138, 0.3); }
+    .badge.red { background: rgba(224, 111, 103, 0.14); color: #ffdcd9; border-color: rgba(224, 111, 103, 0.32); }
+    .badge.amber { background: rgba(240, 179, 91, 0.16); color: #fff0d6; border-color: rgba(240, 179, 91, 0.36); }
+
+    .meta-grid,
+    .card-grid,
+    .risk-grid,
+    .strength-grid,
+    .phase-grid {
+      width: 100%;
+      max-width: 980px;
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .meta-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .strength-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .risk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .phase-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card, .meta-card {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+
+    .meta-card .k {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .meta-card .v {
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .card p, .card li {
+      text-align: left;
+      max-width: none;
+      font-size: 0.95rem;
+    }
+
+    .card ul {
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .card li { margin: 8px 0; }
+
+    .stack {
+      width: 100%;
+      max-width: 740px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-top: 20px;
+    }
+
+    .layer {
+      width: 100%;
+      padding: 16px 22px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 700;
+      border: 1px solid var(--line);
+    }
+
+    .layer.top { background: rgba(198, 168, 90, 0.12); color: var(--gold-soft); }
+    .layer.mid { background: rgba(255, 255, 255, 0.06); }
+    .layer.low { background: rgba(99, 167, 255, 0.12); color: #d6e8ff; }
+    .arrow { color: var(--gold); font-size: 20px; }
+
+    .diagram-box {
+      width: 100%;
+      max-width: 980px;
+      background: #0e1522;
+      border: 1px solid rgba(198, 168, 90, 0.2);
+      border-radius: 18px;
+      padding: 24px;
+      margin-top: 22px;
+      overflow: auto;
+      box-shadow: var(--shadow);
+    }
+
+    pre {
+      color: #d7e2f2;
+      font-family: "Courier New", monospace;
+      line-height: 1.55;
+      font-size: 13px;
+      white-space: pre;
+    }
+
+    .timeline {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .date {
+      color: var(--gold);
+      font-family: "Courier New", monospace;
+      font-size: 13px;
+      font-weight: 700;
+      padding-top: 6px;
+      text-align: right;
+    }
+
+    .event {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      text-align: left;
+      box-shadow: var(--shadow);
+    }
+
+    .event strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .table-wrap {
+      width: 100%;
+      max-width: 980px;
+      margin-top: 22px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      background: rgba(198, 168, 90, 0.08);
+    }
+
+    td {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .callout {
+      width: 100%;
+      max-width: 920px;
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--gold);
+      background: rgba(198, 168, 90, 0.08);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .callout strong { color: var(--gold-soft); }
+
+    #toc-list {
+      width: 100%;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--panel);
+      color: var(--white);
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: 0.2s ease;
+    }
+
+    .toc-link:hover {
+      border-color: rgba(198, 168, 90, 0.42);
+      transform: translateY(-2px);
+    }
+
+    .toc-link span {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 58px 22px 78px; }
+      .meta-grid, .card-grid, .strength-grid, .risk-grid, .phase-grid, #toc-list {
+        grid-template-columns: 1fr;
+      }
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+      .date { text-align: left; }
+    }
+
+    @media print {
+      @page { size: 339mm 191mm; margin: 0; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      html, body { overflow: visible; height: auto; }
+      #progress-bar, #counter, #class-tag, #prev, #next, #dots { display: none !important; }
+      #slides { position: static; height: auto; }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+        transform: none !important;
+        width: 1280px;
+        min-height: 720px;
+        page-break-after: always;
+        break-after: page;
+        overflow: hidden;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <div id="class-tag">Official Partner Publication / Version 1.0</div>
+  <div id="counter">1 / 12</div>
+  <button class="nav-btn" id="prev" type="button" aria-label="Previous slide" disabled>&lsaquo;</button>
+  <button class="nav-btn" id="next" type="button" aria-label="Next slide">&rsaquo;</button>
+  <div id="dots" aria-label="Slide navigation"></div>
+
+  <main id="slides">
+    <section class="slide active" id="slide-0" data-anchor="cover">
+      <div class="slide-label">Project AI Manifest / BPB Governance Architecture Reveal</div>
+      <h1>Governance architecture as an execution control system</h1>
+      <div class="gold-line"></div>
+      <p>
+        A rebuilt standalone deck describing the BPB governance model as a layered authority system:
+        strategic authority at the apex, validation and resistance in the middle, and controlled AI execution
+        at the operational layer.
+      </p>
+      <div class="hero-badges">
+        <span class="badge gold">Official Partner Publication</span>
+        <span class="badge blue">Report Date: 12 March 2026</span>
+        <span class="badge green">Immutable Audit Orientation</span>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-card"><div class="k">Authority Operator</div><div class="v">AA (Alaa Atia)</div></div>
+        <div class="meta-card"><div class="k">Architecture Model</div><div class="v">Three-Layer Gate</div></div>
+        <div class="meta-card"><div class="k">Paradigm</div><div class="v">Event-Sourced</div></div>
+        <div class="meta-card"><div class="k">Audit Trail</div><div class="v">Immutable</div></div>
+        <div class="meta-card"><div class="k">Distribution</div><div class="v">Standalone Reveal-style Report</div></div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-1" data-anchor="contents">
+      <div class="slide-label">Contents</div>
+      <h2>Complete deck map</h2>
+      <div class="gold-line"></div>
+      <p>This rebuilt version closes the missing-anchor problem by mapping every topic to a real slide.</p>
+      <div id="toc-list">
+        <a class="toc-link" href="#executive"><span>01</span>Executive Summary</a>
+        <a class="toc-link" href="#architecture"><span>02</span>Architecture Overview</a>
+        <a class="toc-link" href="#layers"><span>03</span>Three-Layer Authority Model</a>
+        <a class="toc-link" href="#systems"><span>04</span>Core Governance Systems</a>
+        <a class="toc-link" href="#ai-manifest"><span>05</span>AI Manifest Integration</a>
+        <a class="toc-link" href="#coordination"><span>06</span>Cross-Layer Coordination</a>
+        <a class="toc-link" href="#technical"><span>07</span>Technical Implementation</a>
+        <a class="toc-link" href="#regulatory"><span>08</span>Regulatory Readiness</a>
+        <a class="toc-link" href="#strengths"><span>09</span>System Strengths</a>
+        <a class="toc-link" href="#enhancements"><span>10</span>Areas for Enhancement</a>
+        <a class="toc-link" href="#risks"><span>11</span>Risk Assessment</a>
+        <a class="toc-link" href="#conclusion"><span>12</span>Conclusion and Recommendations</a>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2" data-anchor="executive">
+      <div class="slide-label">Executive Summary</div>
+      <h2>Regulator-safe governance with irreversible decision trails</h2>
+      <div class="gold-line"></div>
+      <p>
+        The BPB model positions governance as a control plane rather than a compliance wrapper. Authority is explicit,
+        validation is structurally separated, and execution is recorded into an immutable evidence path.
+      </p>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Authority Model</h3>
+          <p>AA acts as strategic apex authority. YAI acts as the validation and resistance layer. AI executes only within controlled bounds.</p>
+        </article>
+        <article class="card">
+          <h3>Architecture Paradigm</h3>
+          <p>Event-sourced, schema-driven, append-only governance with audit-ready records and explicit responsibility boundaries.</p>
+        </article>
+        <article class="card">
+          <h3>Institutional Positioning</h3>
+          <p>The model is aimed at high-accountability environments where authority provenance matters as much as the final action.</p>
+        </article>
+        <article class="card">
+          <h3>Primary Value</h3>
+          <p>It transforms ambiguous automation into traceable, reviewable, regulator-defensible execution.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3" data-anchor="architecture">
+      <div class="slide-label">Architecture Overview</div>
+      <h2>The BPB governance ecosystem</h2>
+      <div class="gold-line"></div>
+      <div class="diagram-box">
+<pre>+-----------------------------------------------------------------------+
+|                    BPB SOLUTIONS GOVERNANCE ECOSYSTEM                 |
+|                     Multi-brand operational architecture              |
++-----------------------------------------------------------------------+
+                                |
+                                v
++-----------------------------------------------------------------------+
+| LAYER 1: AUTHORITY                                                    |
+| AA Investitionen und Beratung / BPB strategic authority               |
+| Declares intent | accepts risk | authorizes consequence               |
++-----------------------------------------------------------------------+
+                                |
+                                v
++-----------------------------------------------------------------------+
+| LAYER 2: YAI                                                          |
+| Validation | resistance | contradiction | STOP potential              |
+| Tests decisions before execution is allowed to proceed                |
++-----------------------------------------------------------------------+
+                                |
+                                v
++-----------------------------------------------------------------------+
+| LAYER 3: AI                                                           |
+| Resolution | execution | structured output                            |
+| Performs bounded execution after authority and validation resolve     |
++-----------------------------------------------------------------------+</pre>
+      </div>
+      <div class="callout"><strong>Interpretation:</strong> the architecture does not remove human authority. It formalizes where authority ends, where resistance happens, and where execution becomes permitted.</div>
+    </section>
+
+    <section class="slide" id="slide-4" data-anchor="layers">
+      <div class="slide-label">Three-Layer Authority Model</div>
+      <h2>Authority, resistance, execution</h2>
+      <div class="gold-line"></div>
+      <div class="stack">
+        <div class="layer top">Layer 1 / AA Human Apex / intent, legitimacy, responsibility</div>
+        <div class="arrow">↓</div>
+        <div class="layer mid">Layer 2 / YAI / validation, contradiction, policy resistance, stop capability</div>
+        <div class="arrow">↓</div>
+        <div class="layer low">Layer 3 / AI / execution, transformation, delivery of bounded outcomes</div>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Layer 1: AA</h3>
+          <ul>
+            <li>Owns strategic intent.</li>
+            <li>Approves consequences and risk acceptance.</li>
+            <li>Cannot be replaced by automated role logic.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Layer 2: YAI</h3>
+          <ul>
+            <li>Introduces non-trivial review pressure.</li>
+            <li>Creates trust through explicit resistance.</li>
+            <li>Can halt low-confidence or policy-breaking flows.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-5" data-anchor="systems">
+      <div class="slide-label">Core Governance Systems</div>
+      <h2>Named systems inside the architecture</h2>
+      <div class="gold-line"></div>
+      <div class="strength-grid">
+        <article class="card">
+          <h3>PMS_GOVERN</h3>
+          <p>Execution governance engine enforcing authority thresholds, command structure, and evidence generation.</p>
+        </article>
+        <article class="card">
+          <h3>QGED</h3>
+          <p>Authority gate controlling whether execution is allowed, blocked, held, or escalated.</p>
+        </article>
+        <article class="card">
+          <h3>Immutable Ledger</h3>
+          <p>Append-only chain that preserves authorization sequence, timestamps, and integrity references.</p>
+        </article>
+        <article class="card">
+          <h3>AI Manifest</h3>
+          <p>Defines the behavioral contract of the AI layer so execution remains bound to documented system intent.</p>
+        </article>
+        <article class="card">
+          <h3>Domain State</h3>
+          <p>Separates operational state from doctrinal state, reducing authority leakage across domains.</p>
+        </article>
+        <article class="card">
+          <h3>Audit Records</h3>
+          <p>Institutional memory surface for proving why a decision happened and under what authority path.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-6" data-anchor="ai-manifest">
+      <div class="slide-label">AI Manifest Integration</div>
+      <h2>Why the AI layer stays governable</h2>
+      <div class="gold-line"></div>
+      <p>
+        The AI Manifest is not decoration. It is the formal description of how the AI layer should behave when operating
+        beneath human authority and mediated validation.
+      </p>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Behavioral Constraint</h3>
+          <ul>
+            <li>AI is not sovereign.</li>
+            <li>Execution is subordinate to validated authority.</li>
+            <li>Commands should be explicit and reviewable.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Governance Implication</h3>
+          <ul>
+            <li>AI proposals can be useful without being self-authorizing.</li>
+            <li>Policy and authority remain external to AI generation.</li>
+            <li>Safety comes from structure, not prompt language alone.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-7" data-anchor="coordination">
+      <div class="slide-label">Cross-Layer Coordination</div>
+      <h2>How the layers resolve together</h2>
+      <div class="gold-line"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Owner</th>
+              <th>Function</th>
+              <th>Failure Mode Prevented</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Intent declaration</td>
+              <td>AA</td>
+              <td>Sets purpose and accepts consequences</td>
+              <td>Anonymous or accidental authority</td>
+            </tr>
+            <tr>
+              <td>Validation and resistance</td>
+              <td>YAI</td>
+              <td>Challenges logic, checks coherence, can stop flow</td>
+              <td>Unchecked automated momentum</td>
+            </tr>
+            <tr>
+              <td>Execution</td>
+              <td>AI</td>
+              <td>Produces output under bounded authority</td>
+              <td>Unowned autonomous action</td>
+            </tr>
+            <tr>
+              <td>Evidence capture</td>
+              <td>Ledger / audit system</td>
+              <td>Persists the decision path</td>
+              <td>Post-hoc ambiguity</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-8" data-anchor="technical">
+      <div class="slide-label">Technical Implementation</div>
+      <h2>Reference implementation posture</h2>
+      <div class="gold-line"></div>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Event-Sourced State</h3>
+          <p>System changes should be represented as explicit events, allowing reconstruction and audit of prior states.</p>
+        </article>
+        <article class="card">
+          <h3>Schema-Driven Commands</h3>
+          <p>Commands should be typed, attributable, and bounded by policy and manifest constraints.</p>
+        </article>
+        <article class="card">
+          <h3>Hash-Chained Records</h3>
+          <p>Ledger entries should carry reference continuity so tampering becomes immediately visible.</p>
+        </article>
+        <article class="card">
+          <h3>Freeze Capability</h3>
+          <p>The platform should support explicit freeze states in which no further execution occurs without a later unfreeze action.</p>
+        </article>
+      </div>
+      <div class="callout"><strong>Practical note:</strong> the technical architecture only becomes credible when the runtime, ledger, and manifest all agree on state.</div>
+    </section>
+
+    <section class="slide" id="slide-9" data-anchor="regulatory">
+      <div class="slide-label">Regulatory Readiness</div>
+      <h2>Why this matters in regulated or high-risk domains</h2>
+      <div class="gold-line"></div>
+      <div class="strength-grid">
+        <article class="card">
+          <h3>Traceability</h3>
+          <p>Every material decision should be attributable to a responsible authority path.</p>
+        </article>
+        <article class="card">
+          <h3>Non-repudiation</h3>
+          <p>Immutable records reduce disputes about who approved, who challenged, and what was executed.</p>
+        </article>
+        <article class="card">
+          <h3>Human Accountability</h3>
+          <p>The human apex remains visible instead of being hidden behind automation language.</p>
+        </article>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="date">Governance</div>
+          <div class="event"><strong>Fits environments where policy is insufficient by itself</strong><span>Finance, trade, logistics, and other domains where the decision path matters as much as the decision.</span></div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">Audit</div>
+          <div class="event"><strong>Supports defensible review</strong><span>Evidence exists across multiple system surfaces, not a single mutable record.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-10" data-anchor="strengths">
+      <div class="slide-label">System Strengths</div>
+      <h2>What is already strong</h2>
+      <div class="gold-line"></div>
+      <div class="strength-grid">
+        <article class="card">
+          <h3>Clear apex authority</h3>
+          <p>Responsibility is not diffused into vague automation claims.</p>
+        </article>
+        <article class="card">
+          <h3>Designed resistance layer</h3>
+          <p>Validation exists as structure, not afterthought review.</p>
+        </article>
+        <article class="card">
+          <h3>Execution bounded by design</h3>
+          <p>The AI layer is constrained by architecture and documented behavior.</p>
+        </article>
+        <article class="card">
+          <h3>Evidence-oriented posture</h3>
+          <p>Audit trail and ledger logic support institutional memory.</p>
+        </article>
+        <article class="card">
+          <h3>Cross-brand applicability</h3>
+          <p>The model can govern multiple operating surfaces without collapsing authority definitions.</p>
+        </article>
+        <article class="card">
+          <h3>Good narrative coherence</h3>
+          <p>Doctrine, system model, and control claims align well conceptually.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-11" data-anchor="enhancements">
+      <div class="slide-label">Areas for Enhancement</div>
+      <h2>Where the architecture should be strengthened next</h2>
+      <div class="gold-line"></div>
+      <div class="phase-grid">
+        <article class="card">
+          <h3>Formal escalation logic</h3>
+          <p>Codify how unresolved YAI resistance is escalated and resolved.</p>
+        </article>
+        <article class="card">
+          <h3>Machine-readable policy surfaces</h3>
+          <p>Increase the degree to which policies are enforceable by runtime rather than narrative interpretation.</p>
+        </article>
+        <article class="card">
+          <h3>Operational metrics</h3>
+          <p>Add measurable thresholds for latency, override frequency, rejection rate, and freeze invocation.</p>
+        </article>
+        <article class="card">
+          <h3>External evidence packaging</h3>
+          <p>Prepare regulator-facing export bundles that combine authority, validation, and ledger evidence.</p>
+        </article>
+      </div>
+      <div class="callout"><strong>Most important next step:</strong> define the precise runtime rules that transition the system among operational, audit, and freeze states.</div>
+    </section>
+
+    <section class="slide" id="slide-12" data-anchor="risks">
+      <div class="slide-label">Risk Assessment</div>
+      <h2>Primary architectural risks</h2>
+      <div class="gold-line"></div>
+      <div class="risk-grid">
+        <article class="card">
+          <h3 style="color: var(--amber);">Concentration risk</h3>
+          <p>If too much authority remains coupled to a single apex operator, scaling and delegation become fragile.</p>
+        </article>
+        <article class="card">
+          <h3 style="color: var(--amber);">Validation ambiguity</h3>
+          <p>If YAI resistance rules are not formalized, contradiction can become subjective instead of institutional.</p>
+        </article>
+        <article class="card">
+          <h3 style="color: var(--red);">Evidence divergence</h3>
+          <p>If runtime state, ledger, and manifest drift apart, governance claims become symbolic rather than real.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-13" data-anchor="conclusion">
+      <div class="slide-label">Conclusion and Recommendations</div>
+      <h2>Governance becomes real when execution has a boundary</h2>
+      <div class="gold-line"></div>
+      <p>
+        The strongest idea in this architecture is not AI execution. It is the insistence that authority, resistance,
+        execution, and evidence remain separable and verifiable. That is the basis for credible institutional control.
+      </p>
+      <div class="badge-row">
+        <span class="badge gold">Clarify escalation</span>
+        <span class="badge blue">Formalize state transitions</span>
+        <span class="badge green">Preserve immutable evidence</span>
+        <span class="badge red">Avoid symbolic governance</span>
+      </div>
+      <div class="footer-note">
+        BPB Solutions LTD / Project AI Manifest / Rebuilt standalone Reveal-style report / 12 March 2026
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const dotsEl = document.getElementById("dots");
+    const progressBar = document.getElementById("progress-bar");
+    const counter = document.getElementById("counter");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const total = slides.length;
+    let current = 0;
+
+    function updateHash() {
+      const anchor = slides[current].dataset.anchor;
+      if (anchor) {
+        history.replaceState(null, "", "#" + anchor);
+      }
+    }
+
+    function render() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("active", index === current);
+      });
+
+      document.querySelectorAll(".dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === current);
+      });
+
+      progressBar.style.width = (((current + 1) / total) * 100) + "%";
+      counter.textContent = (current + 1) + " / " + total;
+      prev.disabled = current === 0;
+      next.disabled = current === total - 1;
+      updateHash();
+    }
+
+    function goTo(index) {
+      if (index < 0 || index >= total) return;
+      current = index;
+      render();
+    }
+
+    function change(step) {
+      goTo(current + step);
+    }
+
+    slides.forEach((slide, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "dot" + (index === 0 ? " active" : "");
+      button.setAttribute("aria-label", "Go to slide " + (index + 1));
+      button.addEventListener("click", () => goTo(index));
+      dotsEl.appendChild(button);
+    });
+
+    document.querySelectorAll(".toc-link").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        const anchor = link.getAttribute("href").slice(1);
+        const targetIndex = slides.findIndex(slide => slide.dataset.anchor === anchor);
+        if (targetIndex !== -1) goTo(targetIndex);
+      });
+    });
+
+    prev.addEventListener("click", () => change(-1));
+    next.addEventListener("click", () => change(1));
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === " ") {
+        event.preventDefault();
+        change(1);
+      }
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        change(-1);
+      }
+      if (event.key === "Home") {
+        event.preventDefault();
+        goTo(0);
+      }
+      if (event.key === "End") {
+        event.preventDefault();
+        goTo(total - 1);
+      }
+    });
+
+    let touchX = 0;
+    document.addEventListener("touchstart", event => {
+      touchX = event.touches[0].clientX;
+    }, { passive: true });
+
+    document.addEventListener("touchend", event => {
+      const diff = event.changedTouches[0].clientX - touchX;
+      if (Math.abs(diff) > 50) {
+        change(diff < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+
+    const initialHash = window.location.hash.slice(1);
+    if (initialHash) {
+      const index = slides.findIndex(slide => slide.dataset.anchor === initialHash);
+      if (index !== -1) current = index;
+    }
+
+    render();
+  </script>
+</body>
+</html>

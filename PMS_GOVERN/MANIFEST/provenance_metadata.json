@@ -1,0 +1,8 @@
+{
+  "component": "PMS_GOVERN",
+  "created": "Unknown (no metadata found)",
+  "last_modified": "2026-03-09",
+  "author": "Unknown",
+  "provenance": "No audit or evidence logs found. Manifest, policy, and schema files are empty.",
+  "recommendation": "Add metadata files and use version control for future provenance tracking."
+}

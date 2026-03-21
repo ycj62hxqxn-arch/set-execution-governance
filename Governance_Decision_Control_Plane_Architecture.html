@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Governance Decision Control Plane Architecture</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7fa; color: #222; margin: 0; padding: 0; }
+    .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+    h1, h2, h3 { color: #2a3a5a; }
+    .section { margin-bottom: 32px; }
+    .diagram { font-family: 'Menlo', 'Consolas', monospace; background: #f4f4f4; border-radius: 6px; padding: 16px; margin: 16px 0; color: #333; }
+    ul { margin: 12px 0 0 24px; }
+    .key { color: #0a7; font-weight: bold; }
+    .footer { margin-top: 40px; color: #888; font-size: 0.95em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Governance Decision Control Plane Architecture</h1>
+    <div class="section">
+      <h2>1. Control-Plane Pattern</h2>
+      <p>Distributed systems separate <span class="key">control plane</span> (decision, policy, orchestration) from <span class="key">data plane</span> (execution systems).</p>
+      <div class="diagram">
+        CONTROL PLANE<br>
+        (policy, authority, orchestration)<br>
+        │<br>
+        ▼<br>
+        DATA PLANE<br>
+        (execution systems doing work)
+      </div>
+      <ul>
+        <li>Control plane decides what is allowed.</li>
+        <li>Data plane executes work (payments, logistics, AI, infra).</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2>2. Governance OS as Decision Control Plane</h2>
+      <div class="diagram">
+        Human Authority<br>
+        │<br>
+        Governance Doctrine<br>
+        │<br>
+        Runtime Authority Engine<br>
+        │<br>
+        Execution Governance Platform<br>
+        ──────────────────────────────<br>
+        Execution Systems (Data Plane)
+      </div>
+      <p class="key">Execution systems cannot act without passing the control plane.</p>
+    </div>
+    <div class="section">
+      <h2>3. Full Governance Control Plane Stack</h2>
+      <div class="diagram">
+        External Ecosystem Interface<br>
+        ▲<br>
+        Governance Evidence Ledger<br>
+        ▲<br>
+        Execution Governance Platform<br>
+        ▲<br>
+        Runtime Authority Engine<br>
+        ▲<br>
+        Governance Doctrine Engine<br>
+        ▲<br>
+        Human Authority Layer<br>
+        ──────────────────────────────<br>
+        Data Plane (Execution Systems)
+      </div>
+    </div>
+    <div class="section">
+      <h2>4. The Data Plane</h2>
+      <ul>
+        <li>Execution Systems</li>
+        <li>Finance Systems</li>
+        <li>Operations Platforms</li>
+        <li>AI Agents</li>
+        <li>Infrastructure Automation</li>
+      </ul>
+      <p>These systems perform work but do not decide authority. Authority is handled above them.</p>
+    </div>
+    <div class="section">
+      <h2>5. Governance Gate (Critical Component)</h2>
+      <div class="diagram">
+        Execution Request<br>
+        │<br>
+        Governance Gate<br>
+        │<br>
+        Authority Resolution<br>
+        │<br>
+        Policy Evaluation<br>
+        │<br>
+        Risk Classification<br>
+        │<br>
+        Execution Authorization<br>
+        │<br>
+        System Executes
+      </div>
+      <ul>
+        <li>Authority is validated</li>
+        <li>Policies are applied</li>
+        <li>Risk is assessed</li>
+        <li>Execution is controlled</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2>6. The Decision Pipeline</h2>
+      <div class="diagram">
+        Actor / AI Agent<br>
+        │<br>
+        Action Proposal<br>
+        │<br>
+        Runtime Authority Engine<br>
+        │<br>
+        Governance Gate<br>
+        │<br>
+        Policy & Risk Validation<br>
+        │<br>
+        Execution Governance Platform<br>
+        │<br>
+        Operational Systems Execute<br>
+        │<br>
+        Evidence Ledger Records Outcome
+      </div>
+      <p>Everything becomes traceable.</p>
+    </div>
+    <div class="section">
+      <h2>7. Why This Architecture Matters</h2>
+      <ul>
+        <li>Traditional: Decision → Execution → Audit later (problems: unclear authority, missing records, disputes)</li>
+        <li>This system: Decision → Governance validation → Execution → Automatic evidence capture</li>
+        <li>Governance becomes real-time infrastructure.</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2>8. What the System Actually Is</h2>
+      <p><b>Governance Operating System</b> or <b>Decision Control Plane</b></p>
+      <ul>
+        <li>Authority resolution</li>
+        <li>Execution control</li>
+        <li>Evidence creation</li>
+      </ul>
+      <p>Together they form the operational core.</p>
+    </div>
+    <div class="footer">
+      Last updated: 12 March 2026<br>
+      <span class="key">Decision Control Plane — Governance OS mapped to industry-standard control/data plane architecture.</span>
+    </div>
+  </div>
+</body>
+</html>

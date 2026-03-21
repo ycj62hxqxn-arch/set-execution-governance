@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Public Cut - Last 8 Weeks Carousel</title>
+  <style>
+    :root {
+      --bg: #0f1116;
+      --panel: #171b22;
+      --text: #f2ede3;
+      --muted: rgba(242, 237, 227, 0.68);
+      --gold: #c6a85a;
+      --line: rgba(198, 168, 90, 0.22);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(180deg, #0d1015, #131922);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .wrap {
+      width: min(1240px, calc(100% - 24px));
+      margin: 24px auto 44px;
+    }
+    .hero {
+      padding: 28px 22px;
+      margin-bottom: 18px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .hero .eyebrow {
+      font: 700 12px/1.2 Arial, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      margin-bottom: 8px;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 900px;
+    }
+    .slide {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      margin-bottom: 18px;
+      padding: 12px;
+    }
+    .caption {
+      padding: 12px 10px 4px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">LinkedIn Carousel / Public Cut / Last 8 Weeks</div>
+      <h1>BPB Solutions LTD - Last 8 Weeks Public Program Cut</h1>
+      <p>Single-file carousel wrapper for the three public SVG diagrams generated from the last-eight-weeks reporting bundle.</p>
+    </section>
+
+    <section class="slide">
+      <img src="LinkedIn_Public_Cut_Last_8_Weeks_01.svg" alt="Public cut slide 1" style="width:100%;height:auto;display:block;border-radius:12px;">
+      <div class="caption">Slide 1: governance became a program, not a file set.</div>
+    </section>
+
+    <section class="slide">
+      <img src="LinkedIn_Public_Cut_Last_8_Weeks_02.svg" alt="Public cut slide 2" style="width:100%;height:auto;display:block;border-radius:12px;">
+      <div class="caption">Slide 2: platforms now carry governance signals.</div>
+    </section>
+
+    <section class="slide">
+      <img src="LinkedIn_Public_Cut_Last_8_Weeks_03.svg" alt="Public cut slide 3" style="width:100%;height:auto;display:block;border-radius:12px;">
+      <div class="caption">Slide 3: the strongest milestone was convergence.</div>
+    </section>
+  </main>
+</body>
+</html>

@@ -43,124 +43,124 @@
       background: linear-gradient(135deg, var(--primary) 0%, var(--navy) 100%);
       color: var(--white);
       padding: 56px 48px 48px;
-      text-align: center;
-      position: relative;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 6px;
-      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-soft) 100%);
-    }
-    header .label {
-      font-size: 0.8em;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold-soft);
-      margin-bottom: 12px;
-    }
-    h1 {
-      font-size: 2.6em;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 10px;
-    }
-    .subtitle {
-      font-size: 1.15em;
-      opacity: 0.9;
-      margin-bottom: 20px;
-    }
-    .badge {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--primary);
-      padding: 6px 18px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 0.8em;
-      margin: 4px;
-      letter-spacing: 0.5px;
-    }
-    .badge.blue  { background: var(--info);    color: #fff; }
-    .badge.green { background: var(--success); color: #fff; }
-    .badge.red   { background: var(--danger);  color: #fff; }
-
-    /* ── CONTENT ── */
-    .content { padding: 48px 48px 40px; }
-
-    .review-note {
-      background: #fff8e6;
-      border-left: 5px solid var(--gold);
-      padding: 16px 20px;
-      border-radius: 8px;
-      margin-bottom: 40px;
-      font-size: 0.97em;
-      color: #5a4200;
-    }
-    .review-note strong { color: var(--warn); }
-
-    section { margin-bottom: 48px; }
-
-    h2 {
-      color: var(--primary);
-      font-size: 1.55em;
-      font-weight: 700;
-      padding-bottom: 10px;
-      border-bottom: 3px solid var(--gold);
-      margin-bottom: 22px;
-    }
-    h3 {
-      color: var(--navy);
-      font-size: 1.1em;
-      font-weight: 600;
-      margin: 20px 0 8px;
-    }
-    p { margin-bottom: 14px; }
-
-    /* ── PIPELINE ── */
-    .pipeline {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin: 20px 0;
-    }
-    .pipe-step {
-      background: var(--primary);
-      color: var(--white);
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 0.88em;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .pipe-arrow {
-      color: var(--gold);
-      font-size: 1.4em;
-      font-weight: 700;
-    }
-    .state-req {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-    .state-chip {
-      background: #e8f4fd;
-      border: 2px solid var(--info);
-      color: var(--navy);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.9em;
-      font-weight: 600;
-    }
-    .state-chip.warn { background: #fff3e0; border-color: var(--warn); color: #7a4000; }
-
-    /* ── AUTHORITY TABLE ── */
-    .table-wrap { overflow-x: auto; margin: 16px 0; }
-    table {
-      width: 100%;
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Copilot Instructions Review (Version 2)</title>
+        <style>
+          body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7fa; color: #222; margin: 0; padding: 0; }
+          .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+          h1, h2, h3 { color: #2a3a5a; }
+          table { border-collapse: collapse; width: 100%; margin: 24px 0; }
+          th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+          th { background: #f0f4fa; }
+          code, pre { background: #f4f4f4; color: #333; border-radius: 4px; padding: 2px 6px; }
+          .section { margin-bottom: 32px; }
+          .updated { color: #0a7; font-weight: bold; }
+          .footer { margin-top: 40px; color: #888; font-size: 0.95em; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Copilot Instructions Review (Version 2)</h1>
+          <div class="section">
+            <h2>Big Picture Architecture</h2>
+            <p><strong>Pipeline:</strong> Command Interface → QGED Authority Gate → Execution Layer → Evidence Record → Ledger Append → State Freeze</p>
+            <ul>
+              <li>QGED (gate) and GCC (cycle) engines: QGED blocks unless <code>SYSTEM_STATE</code>, <code>DOMAIN_STATE</code>, <code>AUTHORITY_STATE</code> are all loaded.</li>
+              <li>Immutable ledger: append-only, hash-chained, never modify or delete entries.</li>
+              <li>Evidence record for every executed command.</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>File Canonicity & Directory Layout</h2>
+            <table>
+              <tr><th>Tree</th><th>Role</th><th>Trust</th></tr>
+              <tr><td>Governance Operating System/</td><td>Live runtime state, schemas, policy</td><td><span class="updated">Source of truth</span></td></tr>
+              <tr><td>PMS_GOVERN/</td><td>Canonical implementation scaffold</td><td>Many sub-files are <b>empty stubs</b></td></tr>
+              <tr><td>Root-level files</td><td>Prototype/reference copies</td><td>Do not edit as canonical</td></tr>
+            </table>
+            <ul>
+              <li>Always read from <code>Governance Operating System/</code> for schemas, policy, and state.</li>
+              <li>Write new implementation into <code>PMS_GOVERN/</code> but populate from the live files above.</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>Authority Chain & Signing Rules</h2>
+            <table>
+              <tr><th>Actor</th><th>Level</th><th>Max Complexity</th><th>Execution Rights</th><th>Sectors</th></tr>
+              <tr><td>AA (sovereign)</td><td>5</td><td>10</td><td>✅</td><td>all</td></tr>
+              <tr><td>BPB_OPERATOR (delegated)</td><td>3</td><td>5</td><td>✅</td><td>trade, logistics</td></tr>
+              <tr><td>YAI_AGENT (AI advisory)</td><td>1</td><td>3</td><td>❌</td><td>diagnose only</td></tr>
+            </table>
+            <ul>
+              <li>Live authority mode: <code>direct</code>, <code>delegated</code>, <code>restricted</code>, <code>emergency</code></li>
+              <li>Signing rules: 1–3 complexity → 1 signer; 4–7 → 2 signers; 8–10 → AA mandatory; sector baselines raise minimum; >€10,000 payments always multi-sign.</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>AI Agent Constraints</h2>
+            <ul>
+              <li>YAI may only: <b>diagnose</b>, <b>analyze</b>, <b>propose</b></li>
+              <li>Blocked from: financial execution, authority override, policy modification</li>
+              <li>Source: <code>Governance Operating System/ai/llm_governance_context.json</code></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>Command & Ledger Schema</h2>
+            <ul>
+              <li>All commands: <code>Governance Operating System/schemas/command_schema.json</code></li>
+              <li>Required fields: <code>command_id</code>, <code>actor</code>, <code>action</code>, <code>complexity_score</code>, <code>risk_level</code>, <code>signer</code>, <code>payload</code>, <code>gate_decision</code></li>
+              <li>Action types: <b>GO</b> (execute), <b>HOLD</b> (pause), <b>DIAGNOSE</b> (analyze only)</li>
+              <li>Ledger: append-only, hash-chained, see <code>Governance Operating System/schemas/ledger_schema.json</code></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>Evidence Metadata</h2>
+            <ul>
+              <li>Every executed command produces an evidence record (<code>Evidence Metadata Extension.json</code> template)</li>
+              <li>Fields: <code>event_id</code>, <code>command</code>, <code>actor</code>, <code>domain</code>, <code>authority_validated</code>, <code>system_state</code>, <code>domain_risk_tier</code>, <code>timestamp</code>, <code>hash</code></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>Domains & Runtime Modes</h2>
+            <ul>
+              <li>Domains: <b>CARSHUNTER</b> (automotive, risk_tier 2, threshold 100,000), <b>BPB</b> (finance/advisory), <b>IBN_SINA</b> (medical, baseline complexity 6)</li>
+              <li>Each domain: <code>domain_status</code>, <code>risk_tier</code>, <code>authority_required</code>, <code>transaction_threshold</code>, <code>compliance_mode</code></li>
+              <li>Runtime modes: <code>development</code>, <code>operational</code>, <code>audit</code>, <code>freeze</code>; risk levels: <code>normal</code>, <code>elevated</code>, <code>critical</code></li>
+              <li><b>freeze_state: true</b> → no new commands may be executed under any authority level</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>Key Reference Files</h2>
+            <ul>
+              <li><code>.github/AUTHORITY_STATE.json</code> — live authority mode</li>
+              <li><code>Governance Operating System/SYSTEM_STATE.json</code> — runtime mode and risk</li>
+              <li><code>Governance Operating System/DOMAIN_STATE.json</code> — per-domain state</li>
+              <li><code>actor_manifest.json</code> — actor definitions</li>
+              <li><code>Governance Operating System/policy/authority_registry.yaml</code> — sector permissions</li>
+              <li><code>Governance Operating System/policy/governance_policy.yaml</code> — signing rules, thresholds</li>
+              <li><code>system_manifest.json</code> — system identity (PMS_GOVERN v1.0, QGED, SHA256 ledger)</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h2>Operations Tools (AI-Agent Use)</h2>
+            <table>
+              <tr><th>Tool</th><th>Invocation</th><th>Output</th></tr>
+              <tr><td>PPTX / PDF Engine</td><td><code>.venv/bin/python generate_pptx.py</code></td><td>BPB_Governance_Architecture_Report.pptx (14 slides, 16:9)</td></tr>
+              <tr><td>HTML Reveal</td><td><code>open BPB_Governance_Architecture_Reveal.html</code></td><td>Interactive slides (keyboard/swipe)</td></tr>
+              <tr><td>HTML Review Doc</td><td><code>open Copilot_Instructions_Review.html</code></td><td>Static full-document review</td></tr>
+            </table>
+            <p><b>PDF export:</b> Browser → Cmd+P → Save as PDF → Background graphics ON, no margins.</p>
+          </div>
+          <div class="footer">
+            Last updated: 11 March 2026<br>
+            <span class="updated">Version 2 — reflects merged, clarified, and expanded instructions for AI agent productivity.</span>
+          </div>
+        </div>
+      </body>
+      </html>
       border-collapse: collapse;
       font-size: 0.95em;
     }

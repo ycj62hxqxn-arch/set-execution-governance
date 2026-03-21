@@ -1,0 +1,22 @@
+async function runAI() {
+  const input = document.getElementById("userInput").value;
+  const log = document.getElementById("log");
+
+  log.innerHTML = "Processing...";
+
+  const res = await fetch("http://localhost:3000/execute", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ input })
+  });
+
+  const data = await res.json();
+
+  if (data.status === "blocked") {
+    log.innerHTML = "❌ BLOCKED: " + data.reason;
+  } else {
+    log.innerHTML = "✔ APPROVED:<br><br>" + data.output;
+  }
+}

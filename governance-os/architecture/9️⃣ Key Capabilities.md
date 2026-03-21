@@ -1,0 +1,8 @@
+Key Capabilities
+
+Execution Authorization
+Admissibility Filtering
+Authority Validation
+Evidence Freezing
+Operational State Reporting
+Governance Compliance Enforcement
