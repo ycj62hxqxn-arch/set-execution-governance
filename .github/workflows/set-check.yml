@@ -1,14 +1,11 @@
 name: SET Compliance Check
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
   set-check:
-    name: SET Compliance Check
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +13,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
 
       - name: Debug files
         run: |
