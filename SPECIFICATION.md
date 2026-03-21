@@ -1,80 +1,65 @@
-# SET Specification v1.0
+# SET — System Specification
 
-## Definition
+## Overview
 
-SET (Sovereign Execution Triad) defines a system-level separation between:
+SET (Sovereign Execution Triad) defines a control architecture for execution.
 
-- Truth (what is valid)
-- Verification (what can be proven)
-- Execution Authority (what is allowed to execute)
+It separates:
 
----
-
-## Core Principle
-
-Execution is not implied by correctness.
-
-A system may be:
-
-- logically valid  
-- fully verified  
-- compliant  
-
-…and still not admissible to execute.
+- truth
+- verification
+- execution authority
 
 ---
 
-## The Execution Boundary
+## Problem
 
-Between:
+Systems assume:
 
-decision → execution
+if correct → then executable
 
-there exists a control boundary.
-
-This boundary is:
-
-- non-observable in traditional systems  
-- implicitly trusted  
-- not governed  
-
-SET makes this boundary explicit.
+This assumption fails in dynamic environments.
 
 ---
 
-## Execution Authority (EGA)
+## Solution
 
-EGA is the runtime layer responsible for:
+SET introduces:
 
-- evaluating admissibility  
-- controlling state transitions  
-- enforcing execution constraints  
+> Execution Authority (EGA)
 
-It does not evaluate truth.
-
-It evaluates:
-
-> whether truth is allowed to become real.
+A control mechanism that governs all transitions into execution.
 
 ---
 
-## Failure Mode Addressed
+## Architecture
 
-Traditional systems fail when:
+Layers:
 
-- state validity drifts over time  
-- execution continues on outdated assumptions  
+1. Truth Layer  
+2. Verification Layer  
+3. Execution Authority Layer  
 
-SET prevents this by requiring:
-
-continuous admissibility validation.
+Each operates independently.
 
 ---
 
-## Outcome
+## Key Property
 
-With SET:
+Execution is not automatic.
 
-- execution becomes conditional  
-- governance becomes active  
-- systems remain aligned with reality at runtime
+It is:
+
+- evaluated  
+- gated  
+- authorized  
+
+---
+
+## Result
+
+Systems become:
+
+- controllable  
+- resilient  
+- aligned with real-world state
