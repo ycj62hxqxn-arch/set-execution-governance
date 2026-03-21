@@ -1,0 +1,27 @@
+name: SET Compliance Check
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Validate SET claim
+        run: |
+          echo "Checking SET compliance..."
+
+          if ! grep -q '"execution_authority_required": true' SET-CLAIM.json; then
+            echo "❌ Missing execution authority requirement"
+            exit 1
+          fi
+
+          if ! grep -q '"no_unauthorized_paths": true' SET-CLAIM.json; then
+            echo "❌ Unauthorized paths detected"
+            exit 1
+          fi
+
+          echo "✅ SET compliance verified"
