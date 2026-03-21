@@ -1,8 +1,0 @@
-{
-  "freeze_id": "FREEZE_2026_03_19T000822Z",
-  "reason": "user-requested exact-state freeze",
-  "system_hash": "d7a06a1d89395ac73f879dd5ad78e70632cecbc110f274fd634085b48613dbfb|8fdaa91f4148958a697d0dc9d039efbbe7eaf5e30401b686ff157b1710ee736f|f56ab6a2ba4f897664c4fdb97691cbc12f1a5979e4b8babc99aa932444788984",
-  "ledger_entries": 64,
-  "signed_by": "AA",
-  "timestamp": "2026-03-19T00:08:22Z"
-}
