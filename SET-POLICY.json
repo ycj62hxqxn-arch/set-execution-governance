@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "execution_policy": {
+    "require_claim": true,
+    "require_compliance": true,
+    "require_version": "1.0",
+    "require_fields": [
+      "set_compliant",
+      "set_version"
+    ]
+  }
+}
