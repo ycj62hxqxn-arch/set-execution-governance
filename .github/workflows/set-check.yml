@@ -19,6 +19,16 @@ jobs:
         run: |
           test -f SET-CLAIM.json || (echo "Missing SET-CLAIM.json" && exit 1)
 
-      - name: Enforce execution governance
+      - name: Enforce SET compliance
         run: |
-          echo "SET compliance verified"
+          if ! grep -q '"set_compliant": true' SET-CLAIM.json; then
+            echo "❌ SET compliance is not true"
+            exit 1
+          fi
+
+          if ! grep -q '"set_version": "1.0"' SET-CLAIM.json; then
+            echo "❌ Invalid SET version"
+            exit 1
+          fi
+
+          echo "✅ SET enforcement passed"
