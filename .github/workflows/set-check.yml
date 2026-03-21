@@ -1,20 +1,41 @@
-name: SET Compliance Check
+name: SET Policy Engine
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  set-check:
-    name: SET Compliance Check
+  policy-check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR branch
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Validate SET claim
+      - name: Validate policy + claim
         run: |
-          test -f SET-CLAIM.json || (echo "Missing SET-CLAIM.json" && exit 1)
+          echo "Loading policy..."
+
+          test -f SET-POLICY.json || (echo "❌ Missing SET-POLICY.json" && exit 1)
+          test -f SET-CLAIM.json || (echo "❌ Missing SET-CLAIM.json" && exit 1)
+
+          POLICY_VERSION=$(jq -r '.version' SET-POLICY.json)
+          CLAIM_VERSION=$(jq -r '.set_version' SET-CLAIM.json)
+
+          COMPLIANT=$(jq -r '.set_compliant' SET-CLAIM.json)
+
+          if [ "$COMPLIANT" != "true" ]; then
+            echo "❌ Not compliant"
+            exit 1
+          fi
+
+          REQUIRED_VERSION=$(jq -r '.execution_policy.require_version' SET-POLICY.json)
+
+          if [ "$CLAIM_VERSION" != "$REQUIRED_VERSION" ]; then
+            echo "❌ Version mismatch"
+            exit 1
+          fi
+
+          echo "✅ Policy satisfied"
