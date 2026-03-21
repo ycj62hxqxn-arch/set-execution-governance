@@ -2,10 +2,11 @@ name: SET Compliance Check
 
 on:
   pull_request:
-   : [ main ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   set-check:
+    name: SET Compliance Check
     runs-on: ubuntu-latest
 
     steps:
