@@ -1,30 +1,5 @@
-   145ff41..f40a3d0  main -> main
-alaaatia@Alaas-MacBook-Pro 1. Project AI Manifest % nano .github/workflows/set-check.yml
+name: SET Compliance Check
 
-  UW PICO 5.09         File: .github/workflows/set-check.yml          Modified  
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-    
-jobs:
-  set-check:
-    name: SET Compliance Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        
-      - name: Validate SET claim
-        run: |
-          test -f SET-CLAIM.json || (echo "Missing SET-CLAIM.json" && exit 1)
-          
-File Name to write : .github/workflows/set-check.yml                            
-^G Get Help  ^T  To Files                                                     
-^C Cancel    TAB Complete   
 on:
   push:
     branches: [ main ]
