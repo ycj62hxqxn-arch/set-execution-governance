@@ -39,31 +39,21 @@ Failure to meet any condition = non-compliant
 ## Certification Levels
 
 ### Level 0 — Non-Compliant
-
 - Execution occurs without authority  
 - Validation triggers execution  
 - No governance enforcement  
 
----
-
 ### Level 1 — Partial
-
 - Execution authority exists  
 - Not all transitions are governed  
 - Bypass paths may exist  
 
----
-
 ### Level 2 — Controlled Execution
-
 - All transitions pass through execution authority  
 - No bypass paths exist  
 - Unauthorized execution is rejected  
 
----
-
 ### Level 3 — Authority Grade
-
 - Execution authority enforced at runtime  
 - Immutable audit log of all transitions  
 - Reject-by-default execution model  
@@ -74,7 +64,6 @@ Failure to meet any condition = non-compliant
 ## Certification Grant
 
 Certification is granted when:
-
 - Execution authority governs all transitions  
 - Unauthorized execution is impossible  
 - System behavior is auditable  
@@ -84,7 +73,6 @@ Certification is granted when:
 ## Revocation
 
 Certification SHALL be revoked if:
-
 - Execution occurs without authority  
 - Authority can be bypassed  
 - State transitions occur without approval  
@@ -98,6 +86,20 @@ A system may declare:
 > "This system is SET v1.0 compliant at Level X"
 
 Only if all conditions are met.
+
+---
+
+## Certification Badge
+
+![SET Compliant](./assets/badges/set-compliant.svg)
+
+This system is **SET v1.0 Compliant (Level 2)**
+
+- All transitions require execution authority  
+- No unauthorized execution paths exist  
+- Execution is governed, not assumed  
+
+Verification: see SET-CLAIM.json
 
 ---
 
