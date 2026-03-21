@@ -1,3 +1,4 @@
+![SET Compliant](./assets/badges/set-compliant.svg)
 # SET — Execution Governance
 
 ## The Missing Layer in AI Systems
