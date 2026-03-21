@@ -1,4 +1,7 @@
-name: SET Policy Engine
+- name: Run SET policy engine
+  run: |
+    chmod +x set-validate.sh
+    ./set-validate.shname: SET Policy Engine
 
 on:
   pull_request:
