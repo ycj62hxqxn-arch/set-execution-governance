@@ -1,0 +1,53 @@
+# SET — Execution Governance
+
+## Execution is the Missing Layer in AI Systems
+
+Between intention and action, there exists a control boundary.
+
+Right now, it is unmanaged.
+
+---
+
+## The Industry Assumption
+
+If a system is correct → execution is correct.
+
+This is false.
+
+---
+
+## The Reality
+
+Systems fail not because they break —
+
+but because they continue executing correctly  
+on a state that is no longer valid.
+
+---
+
+## The Gap
+
+Between:
+
+decision → execution
+
+there is a non-observable control window.
+
+SET defines and governs this window.
+
+---
+
+## The Shift
+
+SET introduces Execution Authority:
+
+> A layer that decides whether an action is allowed to become real.
+
+---
+
+## Explore
+
+- [Specification](./SPECIFICATION.md)
+- [Authority](./AUTHORITY.md)
+- [Governance](./governance/GOVERNANCE.md)
+- [Compliance](./compliance/COMPLIANCE.md)
