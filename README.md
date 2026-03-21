@@ -32,7 +32,7 @@ Right now, it is unmanaged.
 
 ## What SET Does
 
-SET introduces an execution control layer.
+SET defines the conditions under which execution is allowed to become real.
 
 It determines:
 
@@ -50,6 +50,31 @@ Execution is admissible.
 
 ---
 
+## Failure Condition
+
+A system that allows execution without authority:
+
+- is uncontrolled  
+- cannot guarantee correctness  
+- cannot prevent invalid state transitions  
+
+Such a system is considered non-governed.
+## Example
+
+System: Vehicle Trade Pipeline (CARSHUNTER)
+
+State: VERIFIED → LIVE
+
+- Verification: vehicle data confirmed  
+- Invariance: constraints satisfied  
+- Execution Authority: ALLOW  
+
+→ Transition COMMITTED
+
+Without execution authority:
+
+→ Transition would not be permitted
+---
 ## Why It Matters
 
 Systems don’t fail because they break.
@@ -85,3 +110,7 @@ Architecture and specification are available in this repository.
 For deeper discussion:
 
 → Reach out / open an issue
+## Statement
+
+Any system that cannot refuse execution after validation  
+does not control execution.
