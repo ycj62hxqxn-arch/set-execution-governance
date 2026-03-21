@@ -1,10 +1,8 @@
 name: SET Compliance Check
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   set-check:
@@ -12,13 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout PR branch
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Validate SET claim
         run: |
           test -f SET-CLAIM.json || (echo "Missing SET-CLAIM.json" && exit 1)
-
-      - name: Enforce execution governance
-        run: |
-          echo "SET compliance verified"
