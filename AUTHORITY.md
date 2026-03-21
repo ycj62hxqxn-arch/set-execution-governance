@@ -1,72 +1,57 @@
-# SET — Execution Governance
+# Authority Layer — SET
 
-SET (Sovereign Execution Triad) defines a missing layer in modern systems:
+## Definition
 
-> The authority to decide whether an action is allowed to execute.
+Authority determines whether a system transition is allowed.
 
----
+It is not derived from:
 
-## The Problem
+- correctness  
+- internal validation  
 
-Modern systems assume:
-
-If a system is correct → execution is correct.
-
-In practice:
-
-- systems remain internally valid  
-- execution continues  
-- reality has already changed  
+It is defined externally.
 
 ---
 
-## The Gap
+## Execution Authority (EGA)
 
-Between:
+EGA is the enforcement mechanism of authority.
 
-decision → execution
+It:
 
-there exists a control boundary.
-
-This boundary is:
-
-- implicit  
-- unmanaged  
-- non-observable  
+- gates execution  
+- evaluates admissibility  
+- prevents unauthorized transitions  
 
 ---
 
-## The Shift
+## Key Distinction
 
-SET makes this boundary:
+Truth answers:
 
-- explicit  
-- governable  
-- enforceable  
+> is it correct?
 
----
+Authority answers:
 
-## Core Idea
-
-Execution is not action.  
-It is a controlled transition.
+> is it allowed?
 
 ---
 
-## Structure
+## Control Model
 
-- **Specification** → defines the model  
-- **Governance** → defines control rules  
-- **Compliance** → defines verification  
+All execution must pass through authority.
+
+No direct execution is permitted.
 
 ---
 
 ## Outcome
 
-With SET:
+Authority ensures:
 
-- execution becomes conditional  
-- governance becomes active  
+- system control  
+- bounded execution  
+- alignment with external reality- governance becomes active  
 - systems stay aligned with reality  
 
 ---
