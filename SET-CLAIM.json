@@ -1,0 +1,17 @@
+{
+  "system": "SET Execution Governance",
+  "version": "1.0",
+  "certification_level": 2,
+  "compliance": {
+    "execution_authority_required": true,
+    "no_unauthorized_paths": true,
+    "verification_not_execution": true,
+    "invariance_not_execution": true
+  },
+  "audit": {
+    "traceability": false,
+    "immutable_log": false
+  },
+  "issued_by": "SET Authority",
+  "status": "compliant"
+}
