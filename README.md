@@ -1,77 +1,65 @@
 # SET — Execution Governance
 
-SET (Sovereign Execution Triad) defines a missing layer in modern systems:
+## The Missing Layer
 
-> The authority to decide whether an action is allowed to execute.
+AI systems today optimize for:
+
+- correctness
+- performance
+- alignment
+
+But they lack control over execution.
 
 ---
 
 ## The Problem
 
-Modern systems assume:
+A system can be:
 
-If a system is correct → execution is correct.
+- correct  
+- validated  
+- compliant  
 
-In practice:
-
-- systems remain internally valid  
-- execution continues  
-- reality has already changed  
+…and still produce outcomes that should not occur.
 
 ---
 
-## The Gap
+## The Insight
 
 Between:
 
 decision → execution
 
-there exists a control boundary.
+there is a control window.
 
-This boundary is:
-
-- implicit  
-- unmanaged  
-- non-observable  
+This window is currently unmanaged.
 
 ---
 
-## The Shift
+## The Solution
 
-SET makes this boundary:
+SET introduces:
 
-- explicit  
-- governable  
-- enforceable  
+> Execution Governance
 
----
+A system that:
 
-## Core Idea
-
-Execution is not action.  
-It is a controlled transition.
+- makes execution conditional  
+- introduces authority  
+- controls real-world transitions  
 
 ---
 
-## Structure
+## What This Enables
 
-- **Specification** → defines the model  
-- **Governance** → defines control rules  
-- **Compliance** → defines verification  
-
----
-
-## Outcome
-
-With SET:
-
-- execution becomes conditional  
-- governance becomes active  
-- systems stay aligned with reality  
+- safe execution in dynamic environments  
+- control over high-impact actions  
+- separation between logic and authority  
 
 ---
 
-## Status
+## Canonical Reference
 
-Version: v1.0  
-Type: Open Standard (emerging)
+See:
+
+- `spec/SET-v1.0.md`
