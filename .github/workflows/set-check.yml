@@ -14,11 +14,6 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Debug files
-        run: |
-          echo "=== FILES IN RUNNER ==="
-          ls -la
-
       - name: Validate SET claim
         run: |
-          test -f SET-CLAIM.json || (echo "❌ Missing SET-CLAIM.json" && exit 1)
+          test -f SET-CLAIM.json || (echo "Missing SET-CLAIM.json" && exit 1)
