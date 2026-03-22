@@ -1,0 +1,36 @@
+import json
+import sys
+
+def validate(data):
+    if data.get("state") != "VERIFIED":
+        return "REJECTED: invalid state"
+
+    if data.get("constraints") != "satisfied":
+        return "REJECTED: constraints failed"
+
+    if data.get("authority") != "ALLOW":
+        return "BLOCKED: no authority"
+
+    return "COMMITTED"
+
+
+def main():
+    try:
+        with open("input.json") as f:
+            data = json.load(f)
+    except:
+        print("ERROR: missing or invalid input.json")
+        sys.exit(1)
+
+    result = validate(data)
+
+    if result != "COMMITTED":
+        print(result)
+        sys.exit(1)
+
+    print(result)
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
